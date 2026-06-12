@@ -123,8 +123,8 @@ html, body {
 }
 .clock          { color: var(--accent); font-size: 13px; font-weight: 700; letter-spacing: .1em; }
 .tz             { color: var(--text-dim); font-size: 10px; }
-/* .presence-label { color: var(--text-dim); font-size: 10px; letter-spacing: .1em; } */
-/* .presence-count { color: var(--accent3); font-size: 13px; font-weight: 700; min-width: 20px; } */
+.presence-label { color: var(--text-dim); font-size: 10px; letter-spacing: .1em; }
+.presence-count { color: var(--accent3); font-size: 13px; font-weight: 700; min-width: 20px; }
 
 /* ══ MAIN LAYOUT ══════════════════════════════ */
 #main {

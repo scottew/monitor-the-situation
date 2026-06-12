@@ -41,7 +41,7 @@ async function init() {
   if (window.innerWidth <= 600) state.gridSize = 2;
   await loadCameras();
   startRefreshCycle();
-  // startPresence();
+  startPresence();
 }
 
 // ── Clock ──────────────────────────────────────
@@ -635,6 +635,19 @@ function haversine(lat1, lng1, lat2, lng2) {
 function startPresence() {
   const sessionId = Math.random().toString(36).slice(2) + Date.now().toString(36);
   const el = document.getElementById('presence-count');
+  if (!el) return;
+
+  let timer = null;
+
+  // No backend (static hosting, /api/presence missing) → hide the counter
+  // quietly instead of showing a dead "--". The API itself already returns
+  // { count: 1 } when Upstash env vars aren't configured, so a reachable
+  // function never lands here.
+  function hidePresence() {
+    document.querySelectorAll('.presence-sep, .presence-label, .presence-count')
+      .forEach(n => { n.style.display = 'none'; });
+    if (timer) clearInterval(timer);
+  }
 
   async function heartbeat() {
     try {
@@ -643,13 +656,17 @@ function startPresence() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId }),
       });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
       const { count } = await r.json();
-      if (el) el.textContent = count;
-    } catch (_) {}
+      el.textContent = count;
+    } catch (e) {
+      console.debug('Presence counter unavailable, hiding:', e.message);
+      hidePresence();
+    }
   }
 
   heartbeat();
-  setInterval(heartbeat, 30000);
+  timer = setInterval(heartbeat, 30000);
 }
 
 // ── Dark mode ──────────────────────────────────
