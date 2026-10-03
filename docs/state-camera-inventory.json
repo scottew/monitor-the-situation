@@ -1,0 +1,2391 @@
+{
+  "schema_version": 1,
+  "assessed_at": "2026-10-03T21:33:04.463399+00:00",
+  "scope": "50 US states; DC and territories excluded",
+  "assessment_complete": true,
+  "all_integrations_ready": false,
+  "methodology": "Official DOT/511/developer sources. Public service existence is distinguished from live media playback, technical feed access, and permission for third-party redistribution. No signup, agreement acceptance, keys, purchases or access-control bypass. Unknown values are not approval. Statewide means state-provided service, not universal road coverage. Raw documentation samples do not prove live media health. This inventory does not enable any adapter by itself.",
+  "states": [
+    {
+      "state_code": "AK",
+      "state_name": "Alaska",
+      "public_view_url": "https://511.alaska.gov/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://511.alaska.gov/api/v2/get/cameras",
+      "feed_access": "documented_api_key_required",
+      "reuse_status": "developer_integration_invited_full_media_terms_unverified",
+      "terms_url": null,
+      "cost_account": "Registered account + developer key required; fee not stated in reviewed docs.",
+      "notes": "Official developer API supports apps. Requires registered account and developer key. Documentation checked; no account created or keyed feed called. Views.Url is a camera page, not necessarily a directly embeddable image.",
+      "sources": [
+        "https://511.alaska.gov/developers/doc",
+        "https://511.alaska.gov/help/endpoint/cameras"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "rate_limit": "10 requests per 60 seconds",
+      "schema": {
+        "id": "Id",
+        "coordinates": [
+          "Latitude",
+          "Longitude"
+        ],
+        "name": "Location or Roadway",
+        "views": "Views[].{Id,Url,Status,Description}",
+        "video": "Views[].VideoUrl documented for Nevada; not assume elsewhere"
+      },
+      "launch_status": "needs_key_and_terms_review",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement"
+    },
+    {
+      "state_code": "AL",
+      "state_name": "Alabama",
+      "public_view_url": "https://www.algotraffic.com/cameras",
+      "public_view_status": "Official free ALGO Traffic public camera website/app, confirmed by ALDOT.",
+      "feed_url": null,
+      "feed_access": "No authorized open developer camera feed established. ALGO authentication exists, but login is not evidence of an open API grant.",
+      "reuse_status": "Restricted: public camera page says cameras are for real-time public safety, not recording/commercial use; unauthorized photography, recording, storage or transmission requires ALDOT permission.",
+      "reuse_category": "restricted",
+      "terms_url": "https://www.algotraffic.com/cameras",
+      "cost_account": "Public website/app free; third-party use needs ALDOT permission and any applicable agreement. No registration attempted.",
+      "notes": "Do not integrate, archive, or proxy ALGO imagery based solely on discoverable network endpoints. Use official viewer link until permission is obtained. No stream schema verified.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://www.aldot.gov/travel.html",
+        "https://www.algotraffic.com/cameras",
+        "https://www.aldotnews.org/2024/03/25/algo-traffic-helps-travelers-prepare-for-spring-break-travel/"
+      ],
+      "launch_status": "Official viewer link-out only until ALDOT grants recording/transmission/commercial-use permission.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "permission_restrictions",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "AR",
+      "state_name": "Arkansas",
+      "public_view_url": "https://www.idrivearkansas.com/",
+      "public_view_status": "Official IDrive Arkansas publicly available, explicitly free.",
+      "feed_url": null,
+      "feed_access": "No reusable camera feed sought beyond published terms because they expressly prohibit this app-embedding use.",
+      "reuse_status": "Restricted: prohibits embedding live cameras/site in another website/app; prohibits direct or indirect links to individual cameras and marketing a camera-link app. General IDrive traveler-information homepage link is allowed.",
+      "reuse_category": "restricted",
+      "terms_url": "https://site.idrivearkansas.com/index.php/policies/camera-terms-of-use",
+      "cost_account": "Free public viewing. No general third-party developer authorization; separate permission would be required.",
+      "notes": "Camera owners retain copyright. Screenshots must retain owner logo. Broader acceptable-use policy does not authorize third parties to build similar products, even free ones. Treat as official homepage link-out only unless ARDOT explicitly approves a different arrangement.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://site.idrivearkansas.com/index.php/policies/camera-terms-of-use",
+        "https://site.idrivearkansas.com/index.php/policies/acceptable-use"
+      ],
+      "launch_status": "Official homepage link-out only; individual-camera embedding/linking expressly restricted.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "permission_restrictions",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "AZ",
+      "state_name": "Arizona",
+      "public_view_url": "https://www.az511.gov/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://az511.com/api/v2/get/cameras",
+      "feed_access": "documented_api_key_required",
+      "reuse_status": "developer_integration_invited_full_media_terms_unverified",
+      "terms_url": null,
+      "cost_account": "Registered account + developer key required; fee not stated in reviewed docs.",
+      "notes": "Official developer API supports apps. Requires registered account and developer key. Documentation checked; no account created or keyed feed called. Views.Url is a camera page, not necessarily a directly embeddable image.",
+      "sources": [
+        "https://www.az511.gov/developers/doc",
+        "https://www.az511.gov/help/endpoint/cameras"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "rate_limit": "10 requests per 60 seconds",
+      "schema": {
+        "id": "Id",
+        "coordinates": [
+          "Latitude",
+          "Longitude"
+        ],
+        "name": "Location or Roadway",
+        "views": "Views[].{Id,Url,Status,Description}",
+        "video": "Views[].VideoUrl documented for Nevada; not assume elsewhere"
+      },
+      "launch_status": "needs_key_and_terms_review",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement"
+    },
+    {
+      "state_code": "CA",
+      "state_name": "California",
+      "public_view_url": "https://quickmap.dot.ca.gov/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://cwwp2.dot.ca.gov/data/d{district}/cctv/cctvStatusD{district:02}.json",
+      "feed_access": "documented_no_key_json",
+      "reuse_status": "explicit_free_application_integration",
+      "terms_url": "https://dot.ca.gov/conditions-of-use",
+      "cost_account": "Explicitly no charge; no key/account required.",
+      "notes": "All12 district files officially documented. Use returned currentImageURL/streamingVideoURL; preserve district-scoped IDs and filter inService. Conditions generally public domain with third-party copyrighted-content exceptions. Live snapshot health separate from catalog timestamp.",
+      "sources": [
+        "https://cwwp2.dot.ca.gov/documentation/cctv/cctv.htm",
+        "https://dot.ca.gov/conditions-of-use",
+        "https://cwwp2.dot.ca.gov/data/d1/cctv/cctvStatusD01.json"
+      ],
+      "verified_at": "2026-10-03T21:18:32Z",
+      "verification_level": "Direct HTTP200 across all12 district JSON feeds:3591 records,3395 inService; image fetch approval review cancelled, no media freshness/playback assertion",
+      "schema": {
+        "root": "data[].cctv",
+        "id": "location.district + index",
+        "coordinates": [
+          "location.latitude",
+          "location.longitude"
+        ],
+        "name": "location.locationName",
+        "image": "imageData.static.currentImageURL",
+        "video": "imageData.streamingVideoURL",
+        "status": "inService string",
+        "refresh": "imageData.static.currentImageUpdateFrequency"
+      },
+      "launch_status": "implement_and_verify",
+      "verification_file": "/workspace/shared/camera-research/caltrans-verification.json",
+      "media_verification": {
+        "result": "Implementation worker reports one image per district:12/12 HTTP200,image/jpeg,nonempty",
+        "source": "/root/plan_state_camera_rollout report2026-10-03T21:23:58Z",
+        "limits": "No visual scene/freshness assertion"
+      },
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "no_key_integration_candidate",
+      "rate_limit": null
+    },
+    {
+      "state_code": "CO",
+      "state_name": "Colorado",
+      "public_view_url": "https://www.cotrip.org/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://manage-api.cotrip.org/",
+      "feed_access": "official_api_portal; registration_requirements_unverified",
+      "reuse_status": "agreement_or_terms_review_required",
+      "terms_url": null,
+      "cost_account": "Public viewer: no payment apparent. Feed cost/account not verified.",
+      "notes": "Official current state dataset links COtrip API management and developer help. Portal is JS-only in reader; developer help inaccessible in web tool. CDOT confirms 1000+ operational cameras April2026; migration means avoid historical hardcoded URLs.",
+      "sources": [
+        "https://data.colorado.gov/Transportation/CDOT-Real-Time-Data-Feed-XML-/j3ch-zsvz/about_data",
+        "https://manage-api.cotrip.org/",
+        "https://maps.cotrip.org/help/section/for-developers.html",
+        "https://www.codot.gov/news/2026/april-2026-news/statewide-camera-project-starts-march30"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "launch_status": "needs_portal_review",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "CT",
+      "state_name": "Connecticut",
+      "public_view_url": "https://ctroads.org/",
+      "public_view_status": "Public CTroads map and camera page; login only needed to customize My Cameras.",
+      "feed_url": null,
+      "feed_access": "Current CTroads developer API is documented, but lists only Message Signs, Events and Advisories, not cameras.",
+      "reuse_status": "Camera reuse unresolved; images are credited to CTDOT and TrafficLand.",
+      "terms_url": null,
+      "cost_account": "Public viewing available; developer account/key required for the documented non-camera API. Camera feed pricing/access unverified.",
+      "notes": "Important discrepancy: old prod-ct vendor help intro mentions cameras, but does not list a camera resource. Current /developers/doc likewise has no camera resource, so camera API support is not confirmed. CTDOT says it does not record these cameras.",
+      "sources": [
+        "https://ctroads.org/",
+        "https://ctroads.org/developers/doc",
+        "https://prod-ct.ibi511.com/developers/help"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "public_portal_camera_api_not_listed",
+      "feed_documentation_url": "https://ctroads.org/developers/doc",
+      "blockers": [
+        "Ask CTDOT/TrafficLand about a supported camera feed and rights; do not infer availability from old generic API intro."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Official viewer link only; current public developer API does not list cameras.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "DE",
+      "state_name": "Delaware",
+      "public_view_url": "https://deldot.gov/map/index.shtml?tab=TrafficCameras",
+      "public_view_status": "Public DelDOT traffic-camera map; official app provides streaming cameras.",
+      "feed_url": "http://www.deldot.gov/traffic/data.ejs?type=cam",
+      "feed_access": "Legacy official Public XML API document provides a camera inventory endpoint; current endpoint operation could not be verified.",
+      "reuse_status": "Legacy documentation allows programmatic B2B/B2G consumption, but current camera redistribution rights not verified.",
+      "terms_url": null,
+      "cost_account": "Legacy documented feed has no key shown. Current access/price unknown; public app free.",
+      "notes": "2011-era technical document lists id/location/area/url/latitude/longitude and camera-inventory polling no faster than every 15 minutes. Legacy image example uses webvideoserv.deldot.gov/video.jpg?source=CAM001&framerate=0; this is historical documentation, not a verified current stream. Current ITMS page describes TMC Extranet but does not resolve public camera licensing.",
+      "sources": [
+        "https://deldot.gov/map/index.shtml?tab=TrafficCameras",
+        "https://bidcondocs.delaware.gov/SHS/SHS_12004CAD_Add4b.pdf",
+        "https://deldot.gov/Programs/itms/index.shtml?dc=data",
+        "https://delaware.gov/guides/driving-and-transportation/"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "legacy_documented_feed_unverified",
+      "endpoint_fields": [
+        "id",
+        "location",
+        "area",
+        "url",
+        "latitude",
+        "longitude"
+      ],
+      "feed_documentation_url": "https://bidcondocs.delaware.gov/SHS/SHS_12004CAD_Add4b.pdf",
+      "rate_limit": "Legacy camera inventory docs: no more often than once per 15 minutes.",
+      "blockers": [
+        "Legacy feed and URL pattern require current validation and reuse permission."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Official viewer link only; legacy XML endpoint needs validation and reuse clearance.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "schema": null
+    },
+    {
+      "state_code": "FL",
+      "state_name": "Florida",
+      "public_view_url": "https://www.fl511.com/",
+      "public_view_status": "Official free FL511 web/app cameras, including streaming-video layer.",
+      "feed_url": null,
+      "feed_access": "No current statewide public camera API onboarding or endpoint verified. Official embeddable map builder is available.",
+      "reuse_status": "Official map embedding is expressly offered, including camera/video layers. Unrestricted extraction or rehosting of camera streams not verified.",
+      "terms_url": null,
+      "cost_account": "Official viewing/app free. Map embed offered without a stated fee/account requirement. Standalone camera API cost/account unknown.",
+      "notes": "FL511 About explicitly allows inserting the statewide or regional interactive map on a website. Embed builder lists Traffic Cameras and Streaming Video. FDOT has partner video-sharing agreements and DIVAS infrastructure, but those are not evidence of a freely reusable public statewide API. Cloud browser confirmed generated camera-layer embed renders map, clusters and camera popups; no native list/grid observed. Sample Astor Bridge offline. Not equivalent native map/list.",
+      "sources": [
+        "https://www.fl511.com/",
+        "https://www.fl511.com/about",
+        "https://www.fl511.com/Map/EmbeddedMapSetup",
+        "https://fdot.gov/traffic/its/fion",
+        "https://teo.fdot.gov/architecture/architectures/d5/html/agreements/agreement1.html"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "official_embed_available_api_unverified",
+      "official_embed_url": "https://www.fl511.com/Map/EmbeddedMapSetup",
+      "blockers": [
+        "For native/raw feed integration, obtain FDOT statewide camera API access and redistribution terms."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Official map embed is a documented launch option; raw-feed integration remains unverified.",
+      "followup_verification": {
+        "state_code": "FL",
+        "checked_at": "2026-10-03T21:27:25Z",
+        "sources": [
+          "https://www.fl511.com/about",
+          "https://www.fl511.com/Map/EmbeddedMapSetup"
+        ],
+        "permission": "Official About page explicitly offers embedding statewide/regional interactive road map on a third-party website, with configurable layers. Builder includes Traffic Cameras and Streaming Video.",
+        "verified_embed_url": "https://www.fl511.com/Map/EmbeddedMap?region=ALL&layers=Cameras&size=4",
+        "generated_code": "<iframe frameborder=\"0\" style=\"border: none; overflow: hidden;\" allowfullscreen=\"true\" webkitallowfullscreen=\"true\" mozallowfullscreen=\"true\" scrolling=\"no\" src=\"https://www.fl511.com/Map/EmbeddedMap?region=ALL&layers=Cameras&size=4\" width=\"100%\" height=\"720\"></iframe>",
+        "browser_verification": "Cloud browser. Selected camera checkbox in official embed builder, read generated iframe code, navigated exact generated URL. Map tiles and clustered markers rendered; cluster zoom worked; individual Astor Bridge popup opened. Sample camera displayed No live camera feed at this time.",
+        "equivalent_to_native_map_list": false,
+        "available_features": [
+          "Clustered interactive camera map",
+          "Layer legend",
+          "Camera popup",
+          "Map zoom",
+          "Map view save control"
+        ],
+        "not_established": [
+          "Native MonitorIt camera list/grid",
+          "MonitorIt favorites",
+          "Bulk API/stream extraction rights",
+          "Control of official iframe contents",
+          "General live-media freshness"
+        ],
+        "recommendation": "Use only as clearly labeled official Florida map fallback if desired. Do not claim completed equivalent native integration; raw media feed rights remain unresolved. Preserve official attribution and iframe controls. No account or key was requested."
+      },
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "official_embed_option",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "GA",
+      "state_name": "Georgia",
+      "public_view_url": "https://511ga.org/",
+      "public_view_status": "Official public map/cameras; 511GA services are stated to be entirely free.",
+      "feed_url": "https://511ga.org/api/v2/get/cameras",
+      "feed_access": "Documented camera API; account and developer key; JSON default or XML.",
+      "reuse_status": "Developer traffic-app use is explicitly supported; full commercial redistribution conditions not verified.",
+      "terms_url": null,
+      "cost_account": "511GA FAQ says all services are free; API documentation requires registered account/key and lists no fee.",
+      "notes": "Limit 10 calls/60 seconds. Fields include Id/Source/SourceId/Roadway/Direction/Latitude/Longitude/Location/SortOrder/Views/Name. Official examples have Views.Url such as https://511ga.org/map/Cctv/186, with Status/Description; direct video availability must be tested rather than assumed.",
+      "sources": [
+        "https://511ga.org/developers/doc",
+        "https://511ga.org/help/endpoint/cameras",
+        "https://511ga.org/about/faq",
+        "https://511ga.org/about/about"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "keyed_documented",
+      "feed_documentation_url": "https://511ga.org/help/endpoint/cameras",
+      "endpoint_fields": [
+        "Id",
+        "Source",
+        "SourceId",
+        "Roadway",
+        "Direction",
+        "Latitude",
+        "Longitude",
+        "Location",
+        "SortOrder",
+        "Views",
+        "Name"
+      ],
+      "rate_limit": "10 calls / 60 seconds",
+      "blockers": [
+        "Developer key; confirm redistribution terms and which views expose video."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Use official portal link now; camera API integration after key and reuse-term verification.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "schema": null
+    },
+    {
+      "state_code": "HI",
+      "state_name": "Hawaii",
+      "public_view_url": "https://www.goakamai.org/cameras/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": null,
+      "feed_access": "no_documented_bulk_feed_found",
+      "reuse_status": "unverified",
+      "terms_url": null,
+      "cost_account": "Public viewer: no payment apparent. Feed cost/account not verified.",
+      "notes": "State Hawaii.gov links GoAkamai cameras. Primarily Oahu, not verified statewide all-island coverage. No public integration agreement/API documented in reviewed official sources.",
+      "sources": [
+        "https://portal.ehawaii.gov/visitors/getting-around/",
+        "https://www.goakamai.org/",
+        "https://www.goakamai.org/cameras/"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "launch_status": "needs_feed_and_permission",
+      "coverage": "Oahu-focused; statewide coverage unverified",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "IA",
+      "state_name": "Iowa",
+      "public_view_url": "https://511ia.org/",
+      "public_view_status": "Official Iowa 511 public images/video.",
+      "feed_url": "https://services.arcgis.com/8lRhdTsQyJpO52F1/arcgis/rest/services/Traffic_Cameras_View/FeatureServer/0",
+      "feed_access": "Official DOT-linked ArcGIS dataset is credential-free; layer metadata and one-feature query returned HTTP 200. Alternative CCTV XML requires vendor account.",
+      "reuse_status": "Explicit CC BY4.0 camera dataset plus official integrator guidance supports public display of DOT-owned feeds. Enable only ORG=IADOT with DOT-hosted media and attribution; no signup needed.",
+      "reuse_category": "explicit_permission_with_media_caveat",
+      "terms_url": "https://iowadot.gov/policies-statements/terms-use",
+      "cost_account": "ArcGIS feed explicitly needs no credentials and has no listed fee. XML access requested through Castle Rock. No accounts created.",
+      "endpoint_fields": [
+        "device_id",
+        "Desc_",
+        "UpdateDate",
+        "UpdateTime",
+        "Route",
+        "ImageName",
+        "ImageURL",
+        "VideoURL",
+        "ORG",
+        "latitude",
+        "longitude",
+        "Type",
+        "REGION",
+        "COMMON_ID"
+      ],
+      "image_video_patterns": "Verified sample ImageURL https://atmsqf.iowadot.gov/snapshots/Public/RWIS/RWIS_84-01.jpg ; VideoURL nullable. Use returned media URLs, not synthesized paths.",
+      "notes": "ArcGIS inventory refresh described as daily; queried sample updated 2026-10-02. Official May 28, 2026 advisory expressly guides media partners and data integrators to this open-data service for current image/video URLs after migration; do not hardcode old video domains. Current GIS terms were found at relocated URL and reviewed; original linked URL was stale. Metadata license is CC BY 4.0, even though site also provides a separate CC0 category. No media playback tested. Follow-on2026-10-03:1260 views, all currently IADOT; three sample JPEGs HTTP200 and visually verified. Video playback untested. See followup_verification for source evidence.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://iowadot.gov/travel-tools/iowa-511/511-data-feeds",
+        "https://data.iowadot.gov/datasets/c4063f200a7b4da5826e2ac86c677cf5_0/explore",
+        "https://www.arcgis.com/sharing/rest/content/items/c4063f200a7b4da5826e2ac86c677cf5?f=json",
+        "https://services.arcgis.com/8lRhdTsQyJpO52F1/arcgis/rest/services/Traffic_Cameras_View/FeatureServer/0",
+        "https://iowadot.gov/policies-statements/terms-use",
+        "https://iowadot.gov/news/2026-05-28/media-advisory-iowa-dot-updates-traffic-camera-video-system-data-feed-usersdevelopers"
+      ],
+      "launch_status": "Enable native snapshot integration for IADOT records with CC BY4.0 attribution, per-view IDs, coordinate validation, daily inventory refresh and returned DOT-hosted image URLs.",
+      "playback_verified": false,
+      "verification_scope": "Catalog count/schema verified; three DOT-owned still image samples HTTP200 and visually verified; no video playback test.",
+      "still_image_samples_verified": true,
+      "followup_verification": {
+        "state_code": "IA",
+        "checked_at_utc": "2026-10-03T21:29:35Z",
+        "decision": {
+          "enable_now": true,
+          "scope": "Public map/list records and ordinary display of Iowa DOT-hosted still images from the official Traffic Cameras feed, filtered to ORG=IADOT. Video URL metadata is also provided; video playback was not tested.",
+          "account_or_key_needed": false,
+          "signup_contact_or_permission_request_needed_for_this_scope": false,
+          "confidence": "High for dataset reuse and no-key access; strong source-supported implementation conclusion for ordinary display of returned Iowa DOT-owned camera media.",
+          "summary": "Enable the official IADOT subset with visible attribution, source/license links, preserved notices, coordinate validation, and media host checks. No added permission gate is warranted by the reviewed official terms and camera-integrator guidance."
+        },
+        "ownership_and_license": {
+          "item_id": "c4063f200a7b4da5826e2ac86c677cf5",
+          "item_owner": "IowaDOT_OTO",
+          "item_access": "public",
+          "item_content_status": "public_authoritative",
+          "dataset_license": "CC BY 4.0",
+          "attribution_party": "Iowa Department of Transportation",
+          "dataset_license_url": "https://creativecommons.org/licenses/by/4.0/",
+          "item_url": "https://www.arcgis.com/sharing/rest/content/items/c4063f200a7b4da5826e2ac86c677cf5?f=pjson",
+          "dataset_url": "https://data.iowadot.gov/datasets/c4063f200a7b4da5826e2ac86c677cf5_0/explore",
+          "terms_url": "https://iowadot.gov/policies-statements/terms-use",
+          "terms_effective_date": "2026-06-19",
+          "camera_integrator_advisory_url": "https://iowadot.gov/news/2026-05-28/media-advisory-iowa-dot-updates-traffic-camera-video-system-data-feed-usersdevelopers",
+          "dataset_permission": "The specific authoritative Traffic Cameras item identifies CC BY 4.0; Iowa DOT current GIS terms permit commercial reuse of licensed datasets and related materials and state site terms do not limit that grant.",
+          "image_permission_distinction": "An item license explicitly establishes the dataset license; a link alone never proves that an unrelated third-party image has the same license. Here every current row identifies ORG=IADOT, every ImageURL is hosted at atmsqf.iowadot.gov, current GIS terms include related materials, and the official May 28 advisory expressly supports media partners/integrators consuming the image and video URLs. Together these support ordinary public display of this DOT-owned camera imagery without a separate contact step. No separate pixel-level license notice was found or required in the reviewed camera guidance. Do not claim the feed licenses all third-party material.",
+          "scope_caveats": [
+            "Keep ORG=IADOT filtering even though all current rows match. Review any future non-IADOT provider before enabling its media.",
+            "Preserve image overlays, attribution, copyright notices, and disclaimers; do not imply Iowa DOT endorses MonitorIt.",
+            "Data and imagery may be unavailable or stale; do not promise safety-critical or navigation accuracy.",
+            "The general website terms contain restrictive language, but the later specific GIS terms explicitly preserve the applicable Creative Commons permissions. Do not use the general wording to nullify the dataset license."
+          ]
+        },
+        "attribution": {
+          "required_elements": [
+            "Credit Iowa Department of Transportation",
+            "Link the source dataset and CC BY 4.0 license",
+            "Indicate modifications such as filtering, reformatting, or aggregation",
+            "Retain supplied attribution/copyright/license/disclaimer notices and avoid implying endorsement"
+          ],
+          "recommended_exact_ui_text": "Traffic camera data and imagery: Iowa Department of Transportation. Traffic Cameras dataset licensed under CC BY 4.0. Filtered and reformatted by MonitorIt. No Iowa DOT endorsement. Provided as-is; camera views may be delayed or unavailable.",
+          "link_targets": {
+            "Iowa Department of Transportation": "https://data.iowadot.gov/datasets/c4063f200a7b4da5826e2ac86c677cf5_0/explore",
+            "CC BY 4.0": "https://creativecommons.org/licenses/by/4.0/",
+            "Terms and limitations": "https://iowadot.gov/policies-statements/terms-use"
+          },
+          "compact_card_text": "Source: Iowa DOT",
+          "note": "No single mandatory verbatim credit sentence is specified. The proposed wording satisfies the identifiable credit/license/change-notice elements without asserting a separate image-specific license. Put full attribution and terms links in the source details and keep a visible credit on the camera view."
+        },
+        "feed": {
+          "layer_url": "https://services.arcgis.com/8lRhdTsQyJpO52F1/arcgis/rest/services/Traffic_Cameras_View/FeatureServer/0",
+          "query_url": "https://services.arcgis.com/8lRhdTsQyJpO52F1/arcgis/rest/services/Traffic_Cameras_View/FeatureServer/0/query?where=ORG+%3D+%27IADOT%27&outFields=FID%2Cdevice_id%2CDesc_%2CImageName%2CImageURL%2CVideoURL%2CORG%2Clatitude%2Clongitude%2CType%2CREGION%2CCOMMON_ID%2CUpdateDate%2CUpdateTime%2CUTCoffset%2CRoute%2CFUNCTION&returnGeometry=false&orderByFields=FID+ASC&resultOffset=0&resultRecordCount=2000&f=json",
+          "filter_sql": "ORG = 'IADOT'",
+          "verified_organization_values": {
+            "IADOT": 1260
+          },
+          "record_count": 1260,
+          "unique_device_id_count": 861,
+          "unique_common_id_count": 858,
+          "unique_image_url_count": 1259,
+          "type_counts": {
+            "RWIS": 364,
+            "Iowa DOT": 743,
+            "Rest Area/Parking": 153
+          },
+          "schema": [
+            {
+              "name": "device_id",
+              "type": "esriFieldTypeInteger",
+              "nullable": true
+            },
+            {
+              "name": "Desc_",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            },
+            {
+              "name": "UpdateDate",
+              "type": "esriFieldTypeInteger",
+              "nullable": true
+            },
+            {
+              "name": "UpdateTime",
+              "type": "esriFieldTypeInteger",
+              "nullable": true
+            },
+            {
+              "name": "UTCoffset",
+              "type": "esriFieldTypeInteger",
+              "nullable": true
+            },
+            {
+              "name": "linear_reference",
+              "type": "esriFieldTypeDouble",
+              "nullable": true
+            },
+            {
+              "name": "Route",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            },
+            {
+              "name": "ImageName",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            },
+            {
+              "name": "ImageURL",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            },
+            {
+              "name": "VideoURL",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            },
+            {
+              "name": "ORG",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            },
+            {
+              "name": "latitude",
+              "type": "esriFieldTypeDouble",
+              "nullable": true
+            },
+            {
+              "name": "longitude",
+              "type": "esriFieldTypeDouble",
+              "nullable": true
+            },
+            {
+              "name": "Type",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            },
+            {
+              "name": "FID",
+              "type": "esriFieldTypeOID",
+              "nullable": false
+            },
+            {
+              "name": "REGION",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            },
+            {
+              "name": "RECORDED",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            },
+            {
+              "name": "COMMON_ID",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            },
+            {
+              "name": "FUNCTION",
+              "type": "esriFieldTypeString",
+              "nullable": true
+            }
+          ],
+          "sample_record": {
+            "device_id": 59629337,
+            "Desc_": "CB - I-680 @ MM 1.1 (130th St)",
+            "UpdateDate": 20261002,
+            "UpdateTime": 163813,
+            "UTCoffset": -500,
+            "linear_reference": 1.0719697521547626,
+            "Route": "I-680",
+            "ImageName": "CB - I-680 @ MM 1.1 (130th St)",
+            "ImageURL": "https://atmsqf.iowadot.gov/SNAPSHOTS/PUBLIC/Metro/cbtv74hd.jpeg",
+            "VideoURL": "https://video2.iowadot.gov:8888/councilbluffs/cbtv74lb/playlist.m3u8",
+            "ORG": "IADOT",
+            "latitude": 41.346072,
+            "longitude": -95.935793,
+            "Type": "Iowa DOT",
+            "FID": 817067,
+            "REGION": "Council Bluffs",
+            "RECORDED": "Y",
+            "COMMON_ID": "CBTV74",
+            "FUNCTION": "General"
+          },
+          "coordinate_fields": {
+            "latitude": "latitude",
+            "longitude": "longitude",
+            "coordinate_units": "decimal degrees",
+            "geometry_native_crs": "EPSG:3857 (ArcGIS wkid 102100)",
+            "geometry_request": "Set outSR=4326 if returnGeometry=true; use geometry.x as longitude and geometry.y as latitude only after reprojection.",
+            "all_current_attribute_coordinates_match_iowa_bounds": true,
+            "min_max_latitude": [
+              40.392971,
+              43.445408
+            ],
+            "min_max_longitude": [
+              -96.475568,
+              -90.167992
+            ]
+          },
+          "identity": "Each row is a camera view, not necessarily a unique physical camera. FID is the query/pagination key, with no promise of cross-refresh stability. ORG + device_id + ImageURL is unique over all 1,260 current rows. Neither device_id nor COMMON_ID nor ImageName is unique; preserve multiple views. URL migrations can change a URL-derived application ID.",
+          "access": {
+            "authenticated": false,
+            "http_status": 200,
+            "cors_allow_origin": "*",
+            "capabilities": "Query",
+            "formats": "JSON, geoJSON, PBF",
+            "listed_fee": null
+          },
+          "pagination": {
+            "supportsPagination": true,
+            "maxRecordCount": 2000,
+            "recommended_page_size": 2000,
+            "orderByFields": "FID ASC",
+            "resultOffset": "Advance by returned record count; inspect exceededTransferLimit and continue until exhausted. Check count separately if useful.",
+            "current_pages_needed": 1,
+            "other_limits": {
+              "standardMaxRecordCount": 16000,
+              "standardMaxRecordCountNoGeometry": 32000,
+              "maxIdsCount": 1000000
+            },
+            "rate_limit": "No camera consumer-specific numeric quota found. The generic ArcGIS org request-unit header is not a per-consumer entitlement. Cache and back off on 429/5xx."
+          },
+          "refresh": {
+            "documented_inventory_cadence": "Once per day according to authoritative item description.",
+            "observed_http_cache": "public, max-age=30, s-maxage=30",
+            "recommended_inventory_cache_seconds": 86400,
+            "recommended_inventory_behavior": "Server-side cached daily ingest; preserve last successful inventory. Refresh sooner on discovered URL migration or widespread broken URLs, with bounded backoff. Do not fetch 1,260 rows for every client interaction.",
+            "image_cadence": "No fixed image refresh guarantee found. Selected-camera refresh of roughly 60 seconds is an application recommendation, not a published permission or source frequency. Load visible images lazily and avoid refreshing every map marker.",
+            "metadata_timestamp_warning": "UpdateDate/UpdateTime are inventory attributes; they were 20261002/163813..163816 while sample images were current on October 3. Do not present them as image-capture freshness.",
+            "image_freshness": "Use actual image overlay timestamp or HTTP Last-Modified when available; otherwise label as latest available image, not verified live."
+          }
+        },
+        "media": {
+          "verified_image_hosts": {
+            "atmsqf.iowadot.gov": 1260
+          },
+          "verified_nonempty_video_hosts": {
+            "video2.iowadot.gov:8888": 236,
+            "video4.iowadot.gov:8888": 237,
+            "video3.iowadot.gov:8888": 228
+          },
+          "video_url_present_count": 701,
+          "video_playback_verified": false,
+          "image_tests": [
+            {
+              "url": "https://atmsqf.iowadot.gov/SNAPSHOTS/PUBLIC/Metro/cbtv74hd.jpeg",
+              "status": 200,
+              "content_type": "image/jpeg",
+              "bytes": 288401,
+              "dimensions": [
+                1280,
+                720
+              ],
+              "last_modified": "Sat, 03 Oct 2026 21:27:38 GMT",
+              "visual_inspection": "Real roadway/rest-area camera image; no error placeholder. Original text overlays preserved."
+            },
+            {
+              "url": "https://atmsqf.iowadot.gov/snapshots/Public/RWIS/RWIS_84-01.jpg",
+              "status": 200,
+              "content_type": "image/jpeg",
+              "bytes": 25315,
+              "dimensions": [
+                640,
+                480
+              ],
+              "last_modified": "Sat, 03 Oct 2026 21:27:49 GMT",
+              "visual_inspection": "Real roadway/rest-area camera image; no error placeholder. Original text overlays preserved."
+            },
+            {
+              "url": "https://atmsqf.iowadot.gov/snapshots/Public/RestAreas/RA80EB300-01-CENTER.jpg",
+              "status": 200,
+              "content_type": "image/jpeg",
+              "bytes": 13269,
+              "dimensions": [
+                480,
+                270
+              ],
+              "last_modified": "Sat, 03 Oct 2026 21:23:10 GMT",
+              "visual_inspection": "Real roadway/rest-area camera image; no error placeholder. Original text overlays preserved."
+            }
+          ],
+          "image_display_verified": true,
+          "image_test_count": 3,
+          "image_fetch_context": "Unauthenticated public GET; no account, cookie, token, or referer required. JPEG decoding and visual inspection succeeded for one DOT traffic image, one RWIS image, and one rest-area image.",
+          "cors_note": "Image responses did not advertise Access-Control-Allow-Origin in these checks. Ordinary <img> display does not need CORS; fetch/canvas pixel access may need a same-origin proxy. Do not misinterpret absent image CORS as a reuse prohibition.",
+          "url_handling": "Use exact feed-returned URLs, preserve path case, require HTTPS, reject credentials and unexpected hosts/schemes, and do not synthesize URLs. The official migration advisory says image and video URLs can change. Current video hosts retain port 8888; do not strip it.",
+          "recommended_image_allowlist": [
+            "atmsqf.iowadot.gov"
+          ],
+          "recommended_video_allowlist": [
+            "video2.iowadot.gov:8888",
+            "video3.iowadot.gov:8888",
+            "video4.iowadot.gov:8888"
+          ],
+          "future_media_hosts": "The advisory anticipated video.iowadot.gov; enable new hosts after confirming official feed values and DOT ownership, rather than assuming arbitrary third-party URLs are covered."
+        },
+        "sources": [
+          {
+            "url": "https://data.iowadot.gov/datasets/c4063f200a7b4da5826e2ac86c677cf5_0/explore",
+            "purpose": "Official open-data dataset"
+          },
+          {
+            "url": "https://www.arcgis.com/sharing/rest/content/items/c4063f200a7b4da5826e2ac86c677cf5?f=pjson",
+            "purpose": "CC BY license, attribution, daily cadence, authoritative ownership"
+          },
+          {
+            "url": "https://iowadot.gov/policies-statements/terms-use",
+            "purpose": "Current CC BY GIS permissions and limitations"
+          },
+          {
+            "url": "https://iowadot.gov/news/2026-05-28/media-advisory-iowa-dot-updates-traffic-camera-video-system-data-feed-usersdevelopers",
+            "purpose": "Official public image/video URL integration guidance"
+          },
+          {
+            "url": "https://iowadot.gov/travel-tools/iowa-511/511-data-feeds",
+            "purpose": "Feature services explicitly require no credentials"
+          },
+          {
+            "url": "https://services.arcgis.com/8lRhdTsQyJpO52F1/arcgis/rest/services/Traffic_Cameras_View/FeatureServer/0?f=pjson",
+            "purpose": "Live schema, query limits, pagination, native CRS"
+          },
+          {
+            "url": "https://services.arcgis.com/8lRhdTsQyJpO52F1/arcgis/rest/services/Traffic_Cameras_View/FeatureServer/0/query?where=1%3D1&groupByFieldsForStatistics=ORG&outStatistics=%5B%7B%22statisticType%22%3A+%22count%22%2C+%22onStatisticField%22%3A+%22FID%22%2C+%22outStatisticFieldName%22%3A+%22camera_count%22%7D%5D&returnGeometry=false&f=json",
+            "purpose": "Current organization values and exact count"
+          },
+          {
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+            "purpose": "Attribution, modifications, no implied endorsement and no additional restrictions"
+          }
+        ],
+        "verification_limitations": [
+          "No app code was changed by this research task.",
+          "Three still-image samples were verified, not every camera.",
+          "HLS playback was not tested.",
+          "Direct requests to the DOT documentation pages returned 403 in this executor, but official pages were retrieved through web search; ArcGIS metadata and feed and three still images returned live 200 responses."
+        ],
+        "raw_evidence_files": [
+          "/workspace/shared/camera-research/iowa-raw-checks.json",
+          "/workspace/shared/camera-research/iowa-image-checks.json"
+        ]
+      },
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "no_key_integration_candidate",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "ID",
+      "state_name": "Idaho",
+      "public_view_url": "https://511.idaho.gov/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://511.idaho.gov/api/v2/get/cameras",
+      "feed_access": "documented_api_key_required",
+      "reuse_status": "developer_integration_invited_full_media_terms_unverified",
+      "terms_url": null,
+      "cost_account": "Registered account + developer key required; fee not stated in reviewed docs.",
+      "notes": "Official developer API supports apps. Requires registered account and developer key. Documentation checked; no account created or keyed feed called. Views.Url is a camera page, not necessarily a directly embeddable image.",
+      "sources": [
+        "https://511.idaho.gov/developers/doc",
+        "https://511.idaho.gov/help/endpoint/cameras"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "rate_limit": "10 requests per 60 seconds",
+      "schema": {
+        "id": "Id",
+        "coordinates": [
+          "Latitude",
+          "Longitude"
+        ],
+        "name": "Location or Roadway",
+        "views": "Views[].{Id,Url,Status,Description}",
+        "video": "Views[].VideoUrl documented for Nevada; not assume elsewhere"
+      },
+      "launch_status": "needs_key_and_terms_review",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement"
+    },
+    {
+      "state_code": "IL",
+      "state_name": "Illinois",
+      "public_view_url": "https://travelmidwest.com/",
+      "public_view_status": "IDOT Gateway/Travel Midwest public regional camera viewer; coverage includes multiple agencies and is not a guarantee of every Illinois road.",
+      "feed_url": "https://travelmidwest.com/About/Policies",
+      "feed_access": "Documented application-based XML/JPEG distribution; exact downloads available after approved registration, not tested.",
+      "reuse_status": "Explicit conditional reuse program, with registration and IDOT policy. Non-IDOT cameras remain subject to their originating agencies' rules.",
+      "reuse_category": "agreement_required",
+      "terms_url": "https://travelmidwest.com/About/InfoReusePolicy",
+      "cost_account": "Official policy says downloads currently available without charge to individuals, organizations and companies; registration required and updated at least annually.",
+      "notes": "Access each XML feed and each image no more than once every 5 minutes. Preserve data, display required IDOT attribution/logo, and link policy in transmissions. IDOT may require a signed agreement or terminate access. This program documents JPEG snapshots; contact source agency for video. No endpoint fields verified.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://travelmidwest.com/About/Policies",
+        "https://travelmidwest.com/About/InfoReusePolicy",
+        "https://travelmidwest.com/Help/FAQs"
+      ],
+      "launch_status": "Integrate only after approved free registration/agreement; obey five-minute polling and source-specific restrictions.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "IN",
+      "state_name": "Indiana",
+      "public_view_url": "https://511in.org/",
+      "public_view_status": "Official INDOT Trafficwise public map and camera list.",
+      "feed_url": "https://content.trafficwise.org/cctv/",
+      "feed_access": "Public still-image directory verified. Official INDOT CARS-Hub also documents CCTV XML at https://inhub.carsprogram.org/data/cctv.xml ; vendor access request supplies login/password.",
+      "reuse_status": "Public technical access established; camera redistribution/commercial use license not verified.",
+      "reuse_category": "unknown",
+      "terms_url": null,
+      "cost_account": "Public viewing and image directory require no account; XML account requested through Castle Rock. No feed fee found, but free reuse not established.",
+      "image_video_patterns": "Published JPEG paths such as https://content.trafficwise.org/cctv/01-002-073-cam1.jpg and thumbnail suffix cam1t.jpg; use directory records rather than assuming every ID has this pattern.",
+      "notes": "Host states images update every 2 minutes. Important health issue: https://content.trafficwise.org/json/cctv.json returned HTTP 200 with zero bytes on 2026-10-03, so do not depend on that metadata file. No bulk camera download performed.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://www.in.gov/indot/about-indot/indots-most-frequently-asked-questions-faq/",
+        "https://511in.org/help/section/how-to-view-list-event-information.html",
+        "https://content.trafficwise.org/",
+        "https://content.trafficwise.org/cctv/",
+        "https://content.trafficwise.org/json/",
+        "https://inhub.carsprogram.org/",
+        "https://www.castlerockits.com/xml-data-feeds"
+      ],
+      "launch_status": "Link out pending reuse approval and healthy metadata feed; public JPEG directory alone insufficient.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "KS",
+      "state_name": "Kansas",
+      "public_view_url": "https://www.kandrive.gov/",
+      "public_view_status": "Official KanDrive website and free KDOT app provide camera views/footage.",
+      "feed_url": "https://ks.carsprogram.org/hub",
+      "feed_access": "Official KDOT CARS-Hub index directs access requests to KDOT#KanDrive.Contact@ks.gov. Camera-specific endpoint not shown in inspected catalog; vendor lists Kansas among credentialed XML systems.",
+      "reuse_status": "Camera reuse license and a current supported camera feed are unverified; request them from KDOT.",
+      "reuse_category": "unknown",
+      "terms_url": null,
+      "cost_account": "Free public app confirmed. Feed account requirements/cost must be confirmed with KDOT; no account created.",
+      "notes": "Hub redirected to an HTTP host kscars.kandrive.gov. Do not treat work-zone or truck-parking APIs as proof of a camera API. No camera field schema verified.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://www.kandrive.gov/",
+        "https://www.ksdot.gov/projects/southwest-kansas-projects/u-s-83-advanced-technology/new-features-on-kandrive",
+        "https://apps.apple.com/us/app/kandrive/id1537865653",
+        "https://ks.carsprogram.org/hub",
+        "https://www.castlerockits.com/xml-data-feeds"
+      ],
+      "launch_status": "Link out; request camera feed and terms from KDOT.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "KY",
+      "state_name": "Kentucky",
+      "public_view_url": "https://goky.ky.gov/",
+      "public_view_status": "Official GoKY public traffic/weather cameras, confirmed by KYTC.",
+      "feed_url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_WebCams_WGS84WM/MapServer/0",
+      "feed_access": "Public ArcGIS camera feature layer with JSON/GeoJSON queries, metadata and a one-record query verified without credentials. Max record count 1000; pagination supported.",
+      "reuse_status": "Public camera dataset exists but no explicit redistribution/commercial license established. Dataset includes internal and external sources; verify media owners' rights.",
+      "reuse_category": "unknown",
+      "terms_url": null,
+      "cost_account": "Public GoKY/ArcGIS read access needs no account and has no posted fee; reuse permission remains separate.",
+      "endpoint_fields": [
+        "id",
+        "name",
+        "status",
+        "state",
+        "county",
+        "highway",
+        "milemarker",
+        "description",
+        "direction",
+        "snapshot",
+        "latitude",
+        "longitude",
+        "updateTS"
+      ],
+      "image_video_patterns": "snapshot field contains media URL; no video field shown. Returned first record linked an older trafficwise.org snapshot and dated updateTS to 2021, so freshness and coverage must be audited before relying on this layer.",
+      "notes": "Service description says snapshots refresh at varying source-specific intervals. Contact kytc.gis.support@KY.Gov for dataset questions. Not proven to match current GoKY inventory.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://goky.ky.gov/",
+        "https://transportation.ky.gov/Pages/SNIC-Resources.aspx",
+        "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_WebCams_WGS84WM/MapServer",
+        "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_WebCams_WGS84WM/MapServer/0"
+      ],
+      "launch_status": "Link out or inventory-only research; public ArcGIS layer may be stale and media license unresolved.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "followup_verification": {
+        "state_code": "KY",
+        "decision": "no_for_public_media_launch",
+        "technical_access": "Public ArcGIS camera inventory/query works without credentials.",
+        "why_not_cleared": "Dataset metadata says licenseInfo None and XML useLimit None, which is useful dataset evidence but not an affirmative grant covering linked images. Layer explicitly consolidates internal and external camera sources. No camera-media redistribution grant found; earlier sample is a partner trafficwise.org image and inventory freshness must be checked.",
+        "feed": {
+          "url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_WebCams_WGS84WM/MapServer/0",
+          "schema": {
+            "id": "id",
+            "name": "name/description",
+            "coordinates": [
+              "latitude",
+              "longitude"
+            ],
+            "image": "snapshot",
+            "status": "status",
+            "state": "state",
+            "road": "highway",
+            "time": "updateTS / EXTRACT_DT"
+          },
+          "max_record_count": 1000,
+          "pagination_supported": true
+        },
+        "cost_account": "No account/key/payment for public ArcGIS read. No downstream image-use price or agreement established.",
+        "sources": [
+          {
+            "url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_WebCams_WGS84WM/MapServer/info/iteminfo",
+            "supports": "licenseInfo None and dataset description"
+          },
+          {
+            "url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_WebCams_WGS84WM/MapServer/info/metadata",
+            "supports": "XML useLimit None"
+          },
+          {
+            "url": "https://kygisserver.ky.gov/arcgis/rest/services/WGS84WM_Services/Ky_WebCams_WGS84WM/MapServer/0",
+            "supports": "Internal/external sources and schema"
+          }
+        ],
+        "next_step": "Get camera-owner-aware current feed and reuse permission, or retain GoKY link-out.",
+        "verification_sample": {
+          "query_file": "/workspace/shared/camera-research/ky-query.json",
+          "features_returned": 1,
+          "first_feature": {
+            "attributes": {
+              "OBJECTID": 1,
+              "district": null,
+              "id": null,
+              "name": null,
+              "status": null,
+              "state": null,
+              "county": null,
+              "highway": null,
+              "milemarker": null,
+              "description": "I-65 just South of I-265 Exit 6 Indiana",
+              "direction": null,
+              "snapshot": "http://pws.trafficwise.org/pullover/172_65_56_11.jpg",
+              "latitude": 38.345217,
+              "longitude": -85.753507,
+              "updateTS": 1621047617000,
+              "EXTRACT_DT": null,
+              "UpdateIndicator": null
+            },
+            "geometry": {
+              "x": -85.75351189257354,
+              "y": 38.345224309938956
+            }
+          }
+        }
+      },
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "LA",
+      "state_name": "Louisiana",
+      "public_view_url": "https://www.511la.org/cctv",
+      "public_view_status": "Official LADOTD 511LA public camera page and free apps.",
+      "feed_url": "https://511la.org/api/v2/get/cameras",
+      "feed_access": "Documented JSON/XML camera API, developer key and registered account required. Ten calls per 60 seconds. Keyed requests not tested.",
+      "reuse_status": "Official API explicitly supports developers making traffic apps; a separate blanket copyright/redistribution license or commercial-use terms were not located in the reviewed pages.",
+      "reuse_category": "developer_program_terms_unverified",
+      "terms_url": null,
+      "cost_account": "Public viewing/free apps confirmed; API docs list account/key with no fee. Exact API pricing and approval terms not explicitly verified.",
+      "endpoint_fields": [
+        "Id",
+        "Source",
+        "SourceId",
+        "Roadway",
+        "Direction",
+        "Latitude",
+        "Longitude",
+        "Location",
+        "Views.Url",
+        "Views.Status",
+        "Views.Description",
+        "Views.VideoUrl"
+      ],
+      "image_video_patterns": "Docs show HLS https://ITSStreamingBR2.dotd.la.gov/public/shr-cam-030.streams/playlist.m3u8 . Sample image URL points to a staging host, so do not hardcode it; obtain current returned URLs after approval.",
+      "notes": "Documentation: https://www.511la.org/help/endpoint/cameras . No media playback tested or API key requested.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://www.511la.org/cctv",
+        "https://511la.org/developers/doc",
+        "https://www.511la.org/help/endpoint/cameras"
+      ],
+      "launch_status": "Developer integration candidate after account/key and reuse-term confirmation.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "MA",
+      "state_name": "Massachusetts",
+      "public_view_url": "https://www.mass511.com/list/cameras",
+      "public_view_status": "Public Mass511 cameras; free official app also offers camera views.",
+      "feed_url": "https://www.mass.gov/info-details/highway-data-for-developers",
+      "feed_access": "MassDOT directs developers to TrafficLand at sales@trafficland.com for a unique camera API feed.",
+      "reuse_status": "Conditional partner access; request-specific TrafficLand license/access needed; no unrestricted redistribution grant verified.",
+      "terms_url": null,
+      "cost_account": "Public viewer/app free. Current official camera API paragraph does not state a price. Do not apply the page's free GoTime travel-times claim to camera imagery.",
+      "notes": "Official camera API delivers JPEG imagery at one frame per 120 seconds. TrafficLand generic API documentation requires system/key query parameters, uses rotating pubtoken image URLs and recommends refreshing feed metadata every 30 minutes. Stream access is separately arranged.",
+      "sources": [
+        "https://www.mass.gov/info-details/highway-data-for-developers",
+        "https://www.mass511.com/list/cameras",
+        "https://api.trafficland.com/docs",
+        "https://www.mass.gov/news/massdot-mapfre-insurance-reminder-highway-assistance-program-helps-with-busy-summer-travel"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "partner_access_required",
+      "feed_documentation_url": "https://api.trafficland.com/docs",
+      "camera_media": "JPEG (official MassDOT API); generic TrafficLand streaming requires contact.",
+      "blockers": [
+        "Verify price, license, coverage, and the issued unique feed with TrafficLand."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Use official portal link now; obtain TrafficLand camera access, price and license.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "MD",
+      "state_name": "Maryland",
+      "public_view_url": "https://www.chart.maryland.gov/TrafficCameras/GetTrafficCameras",
+      "public_view_status": "Public CHART live-camera viewer.",
+      "feed_url": "https://chart.maryland.gov/DataFeeds/GetDataFeeds",
+      "feed_access": "Official CHART camera feed documentation provides Open JSON/XML controls. Also public MD iMAP camera ArcGIS REST layer.",
+      "reuse_status": "Public feed publication verified; broad commercial video redistribution license not established. GIS dataset as-is license disclaimer is not proof of a video license.",
+      "terms_url": "https://catalog.data.gov/dataset/md-imap-maryland-traffic-cameras-traffic-cameras-chart",
+      "cost_account": "No key/payment described for CHART public feeds or ArcGIS layer; live feed response not tested.",
+      "notes": "CHART fields include publicVideoURL, id/name/description, lat/lon, opStatus, lastCachedDataUpdateTime and route fields. Alternative ArcGIS layer exposes location/county/feedID/url/iframe/lat/long; MaxRecordCount 550 with pagination support. Dataset inventory may lag current operations.",
+      "sources": [
+        "https://www.chart.maryland.gov/TrafficCameras/GetTrafficCameras",
+        "https://chart.maryland.gov/DataFeeds/GetDataFeeds",
+        "https://mdgeodata.md.gov/imap/rest/services/Transportation/MD_TrafficCameras/MapServer/0",
+        "https://catalog.data.gov/dataset/md-imap-maryland-traffic-cameras-traffic-cameras-chart"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "public_documented_camera_feed",
+      "alternative_feed_url": "https://mdgeodata.md.gov/imap/rest/services/Transportation/MD_TrafficCameras/MapServer/0",
+      "endpoint_fields": [
+        "publicVideoURL",
+        "id",
+        "name",
+        "description",
+        "lat",
+        "lon",
+        "opStatus",
+        "lastCachedDataUpdateTime",
+        "routeNumber",
+        "routePrefix",
+        "routeSuffix"
+      ],
+      "blockers": [
+        "Confirm live redistribution terms and poll rate; exact CHART JSON/XML download targets not extracted."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Prototype from documented public feed; confirm video reuse terms, exact endpoint and freshness before production.",
+      "followup_verification": {
+        "state_code": "MD",
+        "decision": "no_for_public_media_launch",
+        "technical_access": "CHART officially documents JSON/XML camera feeds and media-view URLs; public MD iMAP ArcGIS layer supplies locations and live-feed links.",
+        "why_not_cleared": "Published data feeds support public data access, but an affirmative video redistribution/embedding license was not established. ArcGIS service licenseInfo is empty. State linking policy disallows framing Maryland pages or presenting their content as your own; it is not a blanket ban on separately authorized feeds, but not a raw-media grant either.",
+        "feed": {
+          "documentation": "https://www.chart.maryland.gov/DataFeeds/GetDataFeeds",
+          "exact_chart_json_target": null,
+          "arcgis_url": "https://mdgeodata.md.gov/imap/rest/services/Transportation/MD_TrafficCameras/MapServer/0",
+          "chart_schema": {
+            "id": "id",
+            "name": "name/description",
+            "coordinates": [
+              "lat",
+              "lon"
+            ],
+            "video_view_url": "publicVideoURL",
+            "status": "opStatus",
+            "time": "lastCachedDataUpdateTime",
+            "road": [
+              "routePrefix",
+              "routeNumber",
+              "routeSuffix"
+            ]
+          },
+          "note": "publicVideoURL is documented as public viewing URL; not verified to be a raw stream."
+        },
+        "cost_account": "No key/account/payment described for public feeds or ArcGIS. Full commercial redistribution scope/cost remains unverified.",
+        "verification_limit": "CHART documentation read in web tool. Direct shell HTTP request to that documentation returned403; did not retry or bypass. No CHART media tested.",
+        "sources": [
+          {
+            "url": "https://www.chart.maryland.gov/DataFeeds/GetDataFeeds",
+            "supports": "Published camera feed and schema"
+          },
+          {
+            "url": "https://www.chart.maryland.gov/TrafficCameras/GetTrafficCameras",
+            "supports": "Current-conditions viewer; no archived imagery"
+          },
+          {
+            "url": "https://mdgeodata.md.gov/imap/rest/services/Transportation/MD_TrafficCameras/MapServer/info/iteminfo",
+            "supports": "Camera data/live-feed links; empty licenseInfo"
+          },
+          {
+            "url": "https://www.maryland.gov/terms-use",
+            "supports": "State linking policy"
+          }
+        ],
+        "next_step": "Obtain explicit camera video reuse/embedding scope and supported CHART JSON endpoint/polling guidance before production.",
+        "verification_sample": {
+          "query_file": "/workspace/shared/camera-research/md-query.json",
+          "features_returned": 1,
+          "first_feature": {
+            "attributes": {
+              "OBJECTID": 1,
+              "location": "WPL C506 at Gantry S-9 MP 33.6",
+              "county": "Anne Arundel County",
+              "feedID": "dd0157c42d7c001300503336c4235c0a",
+              "url": "https://chart.maryland.gov/video/video.php?feed=dd0157c42d7c001300503336c4235c0a",
+              "iframe": "<iframe width=\"484\" height=\"364\" src=\"https://chart.maryland.gov/video/video.php?feed=dd0157c42d7c001300503336c4235c0a\" frame border=\"0\" allowfullscreen></iframe>",
+              "lat": 38.9948,
+              "long": -76.38889
+            },
+            "geometry": {
+              "x": -76.38889000032889,
+              "y": 38.99480000023282
+            }
+          }
+        }
+      },
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "ME",
+      "state_name": "Maine",
+      "public_view_url": "https://www.newengland511.org/cctv",
+      "public_view_status": "Public camera directory/map; ordinary viewing does not require an account.",
+      "feed_url": null,
+      "feed_access": "No current official camera API endpoint or developer onboarding verified.",
+      "reuse_status": "Unresolved for redistribution: state terms address downloading, storing and using traveler-information feeds, but a current camera-specific redistribution grant was not established.",
+      "terms_url": "https://www.newengland511.org/Cms/GetFile?id=84eb37e4-680f-ed11-ab23-0231beac5abc.133035770708130000",
+      "cost_account": "Public viewing free; optional My511 account for saved cameras/routes. Programmatic access price/account requirements unverified.",
+      "notes": "Shared Maine/NH/VT portal. State-specific terms say data is as-is, access may be terminated, and transaction limits may change. No published fixed polling limit located.",
+      "sources": [
+        "https://www.newengland511.org/cctv",
+        "https://www.newengland511.org/about/faq",
+        "https://www.newengland511.org/Cms/GetFile?id=84eb37e4-680f-ed11-ab23-0231beac5abc.133035770708130000",
+        "https://www.maine.gov/portal/visitors/highways.html"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "public_portal_feed_unverified",
+      "blockers": [
+        "Current supported camera feed and reuse rights need agency confirmation."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Official viewer link only; current supported camera API and redistribution permission unverified.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "MI",
+      "state_name": "Michigan",
+      "public_view_url": "https://mdotjboss.state.mi.us/MiDrive/cameras?county=&route=",
+      "public_view_status": "Official Mi Drive public camera map/list. MDOT confirms live viewing; images are not continuously recorded.",
+      "feed_url": null,
+      "feed_access": "No documented public camera API verified. MDOT RIDE is an official real-time API with MiLogin for Business access, but its public dataset list names DMS, parking, work zones, and events, not cameras.",
+      "reuse_status": "Camera redistribution/commercial-app permission not verified; obtain camera-specific authorization from MDOT rather than treating RIDE or public viewing as permission.",
+      "reuse_category": "unknown",
+      "terms_url": "https://www.michigan.gov/mdot/about/mi-drive-disclaimer",
+      "cost_account": "Public viewer has no advertised fee or required account; camera API cost/account unknown. RIDE requires MiLogin for Business.",
+      "notes": "Mi Drive disclaimer gives no uptime/accuracy warranty. RIDE contact: MDOT-ITS-Data@Michigan.gov. No endpoint fields or image URL pattern verified.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://www.michigan.gov/mdot/about/mi-drive-disclaimer",
+        "https://mdotjboss.state.mi.us/MiDrive/cameras?county=&route=",
+        "https://www.michigan.gov/mdot/travel/safety/efforts/its/its-data"
+      ],
+      "launch_status": "Link out to official viewer; supported camera API and reuse permission unresolved.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "MN",
+      "state_name": "Minnesota",
+      "public_view_url": "https://511mn.org/",
+      "public_view_status": "Official MnDOT 511 public camera map/list, JavaScript required.",
+      "feed_url": "https://mn.carsprogram.org/hub",
+      "feed_access": "Official state-branded CARS-Hub and vendor-requested credentials verified. Camera-specific statewide feed endpoint not verified; current hub index contains event/weather/message feeds but no explicit CCTV link.",
+      "reuse_status": "Camera reuse license not verified; general CARS data distribution is not sufficient evidence for live image/video redistribution.",
+      "reuse_category": "unknown",
+      "terms_url": null,
+      "cost_account": "Public viewing has no advertised charge. CARS access requires requested login/password; camera feed availability and cost need confirmation.",
+      "notes": "Do not confuse IRIS Mayfly vehicle-detector archive with camera imagery. Third-party references to older tr.511mn.org endpoints were not accepted as current supported API evidence. No camera field schema or stream format verified.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://511mn.org/",
+        "https://511mn.org/help/index.html",
+        "https://mn.carsprogram.org/hub",
+        "https://www.castlerockits.com/xml-data-feeds",
+        "https://iris.dot.state.mn.us/mayfly/"
+      ],
+      "launch_status": "Link out; supported statewide camera feed and reuse permission unresolved.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "MO",
+      "state_name": "Missouri",
+      "public_view_url": "https://www.modot.org/closed-circuit-cameras",
+      "public_view_status": "Official MoDOT page confirms real-time public Gateway Guide views/video for St. Louis. This entry does not establish comprehensive statewide coverage.",
+      "feed_url": null,
+      "feed_access": "No open documented camera API verified. External partners can request CCTV access from MoDOT Highway Safety and Traffic Division.",
+      "reuse_status": "Streams may be shared with partners for transportation purposes on request. Public/commercial app redistribution requires clarification/agreement; public viewing is not blanket reuse permission.",
+      "reuse_category": "agreement_required",
+      "terms_url": "https://epg.modot.org/index.php/910.6_Closed_Circuit_Television_%28CCTV%29_Systems",
+      "cost_account": "No public viewer charge identified; partner access cost and credentials unknown.",
+      "notes": "Official engineering policy limits camera use to transportation-related purposes; public camera page says local media obtain views through agreements. No image/stream schema verified.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://www.modot.org/closed-circuit-cameras",
+        "https://epg.modot.org/index.php/910.6_Closed_Circuit_Television_%28CCTV%29_Systems",
+        "https://ops.fhwa.dot.gov/travelinfo/resources/datashare/app2mdot.htm"
+      ],
+      "launch_status": "Link out; request partner agreement/feed for integration.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "MS",
+      "state_name": "Mississippi",
+      "public_view_url": "https://www.mdottraffic.com/default.aspx?showMain=true",
+      "public_view_status": "Official MDOTtraffic map, camera layer/list and guest access.",
+      "feed_url": null,
+      "feed_access": "Footer has an API label but the parsed link did not expose a usable documentation target; no documented camera endpoint verified.",
+      "reuse_status": "Portal terms grant limited noncommercial use and instruct commercial users to contact the MDOT CIO. General state information is described as public domain, but copyrighted photos/third-party materials can require permission. Camera-media license therefore needs confirmation.",
+      "reuse_category": "commercial_permission_required",
+      "terms_url": "https://mdot.ms.gov/documents/Administration/TermsOfUse.pdf",
+      "cost_account": "Public guest viewing has no advertised fee. API credentials/cost and commercial terms unknown.",
+      "notes": "Terms require use only in the manner MDOT permits; attribution is requested where feasible. Do not infer that all MDOTtraffic images are freely reusable from the broad public-domain paragraph.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://www.mdottraffic.com/default.aspx?showMain=true",
+        "https://mdot.ms.gov/documents/Administration/TermsOfUse.pdf"
+      ],
+      "launch_status": "Link out; commercial use and camera-feed authorization unresolved.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "permission_restrictions",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "MT",
+      "state_name": "Montana",
+      "public_view_url": "https://app.mdt.mt.gov/atms/public/cameras",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://www.mdt.mt.gov/other/webdata/external/rrs/roadinfo/RWIS_output.xml",
+      "feed_access": "official_legacy_xml_broken; current_api_blocked",
+      "reuse_status": "unverified",
+      "terms_url": "https://www.mdt.mt.gov/mdt/terms-of-use.aspx",
+      "cost_account": "Public viewer: no payment apparent. Feed cost/account not verified.",
+      "notes": "Official data feeds page links RWIS XML but URL redirects to404 search. Current app public camera summaries work in reader. ATMS API path returned Page Not Served. No bypass attempted; terms disclaimers alone not affirmative redistribution license.",
+      "sources": [
+        "https://www.mdt.mt.gov/mdt/rss.aspx",
+        "https://app.mdt.mt.gov/atms/public/cameras",
+        "https://www.mdt.mt.gov/travinfo/weather/rwis-list.aspx",
+        "https://www.mdt.mt.gov/mdt/terms-of-use.aspx"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "launch_status": "needs_current_feed_and_permission",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "NC",
+      "state_name": "North Carolina",
+      "public_view_url": "https://www.drivenc.gov/map",
+      "public_view_status": "Public DriveNC map/cameras; account optional for personalization.",
+      "feed_url": "https://www.drivenc.gov/api/v2/get/cameras",
+      "feed_access": "Current official keyed camera API; registered account required to request developer key; JSON default or XML.",
+      "reuse_status": "API explicitly intended for developer traffic apps; full redistribution/commercial terms not located.",
+      "terms_url": null,
+      "cost_account": "Public viewing free/account optional. No developer API price stated in reviewed docs; key/account required.",
+      "notes": "Limit 10 calls/60 sec. Metadata has Id/Source/SourceId/Roadway/Direction/Latitude/Longitude/Location/SortOrder/Views/County. Views contain Url, Status, Description, VideoUrl. Documentation sample URLs are a staging host and sample VideoUrl is blank; do not ship those sample URLs or assume every camera has video.",
+      "sources": [
+        "https://www.drivenc.gov/map",
+        "https://www.drivenc.gov/developers/doc",
+        "https://www.drivenc.gov/help/endpoint/cameras"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "keyed_documented_cost_terms_unconfirmed",
+      "feed_documentation_url": "https://www.drivenc.gov/help/endpoint/cameras",
+      "endpoint_fields": [
+        "Id",
+        "Source",
+        "SourceId",
+        "Roadway",
+        "Direction",
+        "Latitude",
+        "Longitude",
+        "Location",
+        "SortOrder",
+        "Views",
+        "County"
+      ],
+      "rate_limit": "10 calls / 60 seconds",
+      "blockers": [
+        "API key and confirmation of price/reuse terms; test issued response for current image/video URLs."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Use official portal link now; camera API integration after key and cost/reuse-term verification.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "schema": null
+    },
+    {
+      "state_code": "ND",
+      "state_name": "North Dakota",
+      "public_view_url": "https://travel.dot.nd.gov/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://travelfiles.dot.nd.gov/geojson_nc/cameras.json",
+      "feed_access": "documented_no_key_geojson_but_restricted",
+      "reuse_status": "prior_written_consent_required_for_public_app",
+      "terms_url": "https://www.dot.nd.gov/construction-and-planning/planning-process/gis-and-mapping/web-map-services",
+      "cost_account": "Public viewer free; written permission needed for proposed reuse.",
+      "notes": "GeoJSON only for ETL, not direct consumption in public-facing apps. Minimum5min polling. General terms limit to individual noncommercial informational use and prohibit systematic collection without written consent. Official viewer150+ cameras. DO NOT enable by merely proxying GeoJSON.",
+      "sources": [
+        "https://www.dot.nd.gov/construction-and-planning/planning-process/gis-and-mapping/web-map-services",
+        "https://www.dot.nd.gov/nddot-mobile-apps"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "rate_limit": "No faster than5minutes; ETL-only.",
+      "launch_status": "permission_required",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "permission_restrictions",
+      "schema": null
+    },
+    {
+      "state_code": "NE",
+      "state_name": "Nebraska",
+      "public_view_url": "https://511.nebraska.gov/",
+      "public_view_status": "Official NDOT 511 public highway camera map/list, linked by NDOT travel page.",
+      "feed_url": "https://ne.carsprogram.org/hub",
+      "feed_access": "Official Nebraska state-branded CARS-Hub verified; vendor offers requested login/password. Its inspected catalog lacks a CCTV entry, so camera-specific feed availability is not established.",
+      "reuse_status": "Camera reuse license not verified; obtain camera-specific feed/redistribution terms from NDOT/vendor.",
+      "reuse_category": "unknown",
+      "terms_url": "https://dot.nebraska.gov/policies-and-disclaimers/privacy-policy-and-terms-of-use/",
+      "cost_account": "No public-viewer fee identified; requested XML credentials, camera coverage and cost unknown.",
+      "notes": "The NDOT terms URL was found in the official app listing but failed to render in research tool. Do not apply unrelated Nebraska.gov paid-record subscription terms to camera access. No camera schema or media pattern verified.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://dot.nebraska.gov/travel/",
+        "https://511.nebraska.gov/",
+        "https://new.511.nebraska.gov/list/cameras",
+        "https://ne.carsprogram.org/hub",
+        "https://www.castlerockits.com/xml-data-feeds",
+        "https://dot.nebraska.gov/policies-and-disclaimers/privacy-policy-and-terms-of-use/"
+      ],
+      "launch_status": "Link out; request camera feed and terms from NDOT/vendor.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "NH",
+      "state_name": "New Hampshire",
+      "public_view_url": "https://www.newengland511.org/cctv",
+      "public_view_status": "Public camera directory/map; ordinary viewing does not require an account.",
+      "feed_url": null,
+      "feed_access": "No current official camera API endpoint or developer onboarding verified.",
+      "reuse_status": "Unresolved for redistribution: state terms address downloading, storing and using traveler-information feeds, but a current camera-specific redistribution grant was not established.",
+      "terms_url": "https://www.newengland511.org/Cms/GetFile?id=e40123ef-680f-ed11-ab23-0231beac5abc.133035770891370000",
+      "cost_account": "Public viewing free; optional My511 account for saved cameras/routes. Programmatic access price/account requirements unverified.",
+      "notes": "Shared Maine/NH/VT portal. State-specific terms say data is as-is, access may be terminated, and transaction limits may change. No published fixed polling limit located.",
+      "sources": [
+        "https://www.newengland511.org/cctv",
+        "https://www.newengland511.org/about/faq",
+        "https://www.newengland511.org/Cms/GetFile?id=e40123ef-680f-ed11-ab23-0231beac5abc.133035770891370000",
+        "https://www.newengland511.org/Home/"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "public_portal_feed_unverified",
+      "blockers": [
+        "Current supported camera feed and reuse rights need agency confirmation."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Official viewer link only; current supported camera API and redistribution permission unverified.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "NJ",
+      "state_name": "New Jersey",
+      "public_view_url": "https://511nj.org/",
+      "public_view_status": "NJDOT explicitly advertises public statewide camera viewing; direct portal fetch returned HTTP 403 in this research.",
+      "feed_url": null,
+      "feed_access": "No current officially documented camera API verified.",
+      "reuse_status": "Redistribution rights unverified.",
+      "terms_url": null,
+      "cost_account": "Official public viewing free; API account/pricing unknown.",
+      "notes": "NJDOT public guidance says camera stills refresh approximately every 30 seconds; newer NJDOT release confirms mobile camera support. References to JSON feeds in a 2019 release do not establish that those feeds include cameras.",
+      "sources": [
+        "https://www.nj.gov/transportation/commuter/511/web.shtm",
+        "https://www.nj.gov/transportation/commuter/motoristassistance/511nj.shtm",
+        "https://www.nj.gov/transportation/about/press/2019/070219.shtm",
+        "https://511nj.org/"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "public_portal_feed_unverified",
+      "blockers": [
+        "Portal fetch blocked; supported camera API, terms and media URL contract need confirmation."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Official viewer link only; current supported camera API and redistribution permission unverified.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "NM",
+      "state_name": "New Mexico",
+      "public_view_url": "https://www.nmroads.com/default.html",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": null,
+      "feed_access": "no_documented_bulk_feed_found",
+      "reuse_status": "unverified",
+      "terms_url": null,
+      "cost_account": "Public viewer: no payment apparent. Feed cost/account not verified.",
+      "notes": "Official NMRoads camera and RWIS layers confirmed. No supported integration API or redistribution terms verified. Contributing third-party content noted in mobile disclaimer.",
+      "sources": [
+        "https://www.nmroads.com/default.html",
+        "https://www.nmroads.com/NMRoadsPublicUserGuide.pdf",
+        "https://m.nmroads.com/",
+        "https://www.dot.nm.gov/highway-operations-program/operations-support-division-director/intelligent-transportation-systems/"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "launch_status": "needs_feed_and_permission",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "NV",
+      "state_name": "Nevada",
+      "public_view_url": "https://www.nvroads.com/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://www.nvroads.com/api/v2/get/cameras",
+      "feed_access": "documented_api_key_required",
+      "reuse_status": "developer_integration_invited_full_media_terms_unverified",
+      "terms_url": null,
+      "cost_account": "Registered account + developer key required; fee not stated in reviewed docs.",
+      "notes": "Official developer API supports apps. Requires registered account and developer key. Documentation checked; no account created or keyed feed called. Views.Url is a camera page, not necessarily a directly embeddable image.",
+      "sources": [
+        "https://www.nvroads.com/developers/doc",
+        "https://www.nvroads.com/help/endpoint/cameras"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "rate_limit": "10 requests per 60 seconds",
+      "schema": {
+        "id": "Id",
+        "coordinates": [
+          "Latitude",
+          "Longitude"
+        ],
+        "name": "Location or Roadway",
+        "views": "Views[].{Id,Url,Status,Description}",
+        "video": "Views[].VideoUrl documented for Nevada; not assume elsewhere"
+      },
+      "launch_status": "needs_key_and_terms_review",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement"
+    },
+    {
+      "state_code": "NY",
+      "state_name": "New York",
+      "public_view_url": "https://www.511ny.org/cctv",
+      "public_view_status": "Official public camera directory; FAQ explains public viewing. Some page extraction returned an FOUO/UCI banner, so only explicitly public API cameras should be used.",
+      "feed_url": "https://prod-ny.ibi511.com/api/getcameras?key={key}&format={format}",
+      "feed_access": "Documented JSON/XML GetCameras API; account, developer application, acceptable-use approval and key.",
+      "reuse_status": "Developer agreement permits redistribution, enhancement and repackaging while preserving source integrity; approval and branding requirements apply.",
+      "terms_url": "https://511ny.org/developers/daa",
+      "cost_account": "Developer service explicitly free, including general public and commercial vendors; registered account and approved API key required.",
+      "notes": "Limit 10 calls per 60 seconds. Docs expose image Url and VideoUrl, coordinates, roadway/direction and disabled/blocked flags. Canonical site has newer camera-view docs; cited vendor endpoint is the verified older documented GetCameras contract. No live authenticated response tested.",
+      "sources": [
+        "https://www.511ny.org/developers/resources",
+        "https://511ny.org/developers/doc",
+        "https://prod-ny.ibi511.com/developers/help/api/get-api-getcameras_key_format",
+        "https://prod-ny.ibi511.com/developers/daa",
+        "https://511ny.org/help/subendpoint/cameras",
+        "https://511ny.org/Faq"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "free_keyed_documented",
+      "endpoint_fields": [
+        "Latitude",
+        "Longitude",
+        "ID",
+        "Name",
+        "DirectionOfTravel",
+        "RoadwayName",
+        "Url",
+        "VideoUrl",
+        "Disabled",
+        "Blocked"
+      ],
+      "feed_documentation_url": "https://511ny.org/developers/doc",
+      "rate_limit": "10 calls / 60 seconds",
+      "blockers": [
+        "Developer approval/key; validate current canonical API version and camera-specific terms on onboarding."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Use official portal link now; API integration after approved key and agreement.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "schema": null
+    },
+    {
+      "state_code": "OH",
+      "state_name": "Ohio",
+      "public_view_url": "https://www.ohgo.com/",
+      "public_view_status": "Official public OHGO map/app, available without an API account.",
+      "feed_url": "https://publicapi.ohgo.com/api/v1/cameras",
+      "feed_access": "Documented REST API; registration and API key required; metadata docs and OpenAPI schema verified, keyed endpoint not called.",
+      "reuse_status": "Explicit public-domain statement for ODOT data on official API introduction, subject to API terms and any separately owned material.",
+      "reuse_category": "explicit_permission",
+      "terms_url": "https://publicapi.ohgo.com/docs/terms-of-use",
+      "cost_account": "API explicitly free; register email/password for a key. No account created.",
+      "endpoint_fields": [
+        "id",
+        "latitude",
+        "longitude",
+        "location",
+        "description",
+        "cameraViews.direction",
+        "cameraViews.smallUrl",
+        "cameraViews.largeUrl",
+        "cameraViews.mainRoute"
+      ],
+      "image_video_patterns": "Use returned smallUrl/largeUrl, not constructed URLs. Official CameraView schema says image snapshots update every 5 seconds. No video field in verified camera schema.",
+      "notes": "Terms describe discretionary per-key rate limits; 25 requests/second is only an example, not a guaranteed quota. Service may be changed or revoked. Documentation: https://publicapi.ohgo.com/docs/v1/cameras ; OpenAPI: https://publicapi.ohgo.com/docs/v1/swagger.json .",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://www.ohgo.com/",
+        "https://publicapi.ohgo.com/",
+        "https://publicapi.ohgo.com/docs/terms-of-use",
+        "https://publicapi.ohgo.com/docs/registration",
+        "https://publicapi.ohgo.com/docs/v1/swagger.json"
+      ],
+      "launch_status": "API integration candidate after user-authorized account/key setup; public-domain data statement verified.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "OK",
+      "state_name": "Oklahoma",
+      "public_view_url": "https://oktraffic.org/",
+      "public_view_status": "Oklahoma DOT's official current-traffic page links directly to OKTraffic live traffic cameras.",
+      "feed_url": null,
+      "feed_access": "No official documented camera API/feed verified in this pass.",
+      "reuse_status": "Public viewing confirmed; reuse, embedding, caching, and commercial permissions unknown.",
+      "reuse_category": "unknown",
+      "terms_url": null,
+      "cost_account": "No public-viewing fee identified; developer account/key/cost unknown.",
+      "notes": "Use official viewer link pending ODOT feed and reuse clarification. No camera fields, refresh limits or media formats verified.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://oklahoma.gov/odot/travel/traffic/current-traffic-conditions.html",
+        "https://oklahoma.gov/content/dam/ok/en/odot/programs-and-projects/programs/transportation-programs/lrtp/lrp-2025-2050/resources/final-plan/2050%20Oklahoma%20Long%20Range%20Transportation%20Plan.pdf"
+      ],
+      "launch_status": "Link out; documented API and reuse permission unresolved.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "OR",
+      "state_name": "Oregon",
+      "public_view_url": "https://www.tripcheck.com/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://www.tripcheck.com/Scripts/map/data/cctvinventory.js",
+      "feed_access": "Verified no-key public camera JS inventory for static snapshots; official XML/JSON API separately requires subscription key.",
+      "reuse_status": "Explicit TripCheck FAQ permits business/organization reuse of data/images found on TripCheck, with ODOT attribution and intact credits; limited here to TripCheck-hosted static snapshots.",
+      "terms_url": "https://www.tripcheck.com/Pages/Frequently-Asked-Questions",
+      "cost_account": "API account/subscription key needed; fee not stated in examined docs.",
+      "notes": "Official FAQ permits businesses/private citizens/organizations using data/images; credit Camera courtesy of ODOT. API CCTV inventory includes imageURL, refresh24h; most camera images5min. Signup+subscription key and explicit terms required for API. No signup performed. Follow-on2026-10-03:1161 unique publishedImageIds; one invalid coordinate. Explicit image reuse grant has no discovered partner-image exception; preserve credits. Exact schema in follow-on evidence.",
+      "sources": [
+        "https://www.tripcheck.com/Pages/API",
+        "https://www.tripcheck.com/Pages/Frequently-Asked-Questions",
+        "https://www.tripcheck.com/pdfs/TripCheckAPI_Getting_Started_GuideV5.pdf",
+        "https://www.tripcheck.com/Scripts/map/data/cctvinventory.js",
+        "https://www.tripcheck.com/DynamicReports/Report/Cameras"
+      ],
+      "verified_at": "2026-10-03T21:32:13Z",
+      "verification_level": "No-key inventory HTTP200;1161 unique views,1160 valid coordinate records; one snapshot HTTP200 and visually current. Includes neighboring-state cameras; do not label every view Oregon or ODOT-owned.",
+      "rate_limit": "No formal quota established; follow observed inventory cadence daily and snapshot refresh5minutes.",
+      "attribution": "Camera courtesy of ODOT",
+      "launch_status": "Enable static-snapshot native integration using public inventory; exclude invalid coordinates, TrafficLand video and external media.",
+      "schema": {
+        "root": "features[].attributes",
+        "id": "publishedImageId",
+        "name": "title",
+        "coordinates": [
+          "latitude",
+          "longitude"
+        ],
+        "image_filename": "filename",
+        "image_url_prefix": "https://www.tripcheck.com/roadcams/cams/"
+      },
+      "followup_verification": {
+        "state_code": "OR",
+        "decision": "yes",
+        "launch_scope": "Direct, unchanged, attributed TripCheck-published still snapshots, excluding TrafficLand live streams and external destinations. This conclusion relies on affirmative FAQ permission, not merely endpoint availability.",
+        "permission_assessment": {
+          "status": "explicit_tripcheck_data_and_image_use_permission",
+          "reason": "ODOT expressly permits businesses, private citizens and organizations to use data/images found on TripCheck and explains obtaining the direct image URL for reuse. The current state terms do not introduce a contrary restriction for these directly published snapshots. Camera partner ownership is disclosed by API docs, but no partner-snapshot exception to the specific TripCheck FAQ grant was found. Preserve any owner credits; do not extend the permission to external websites or separate streaming services.",
+          "attribution": "Camera courtesy of ODOT",
+          "interpretation_limit": "This is an operational source-policy assessment, not a claim that images are public domain or that all camera assets are ODOT-owned."
+        },
+        "feed": {
+          "url": "https://www.tripcheck.com/Scripts/map/data/cctvinventory.js",
+          "access": "No key/account/payment required in actual read",
+          "http_status": 200,
+          "content_type": "application/javascript",
+          "encoding": "Strict JSON despite .js extension",
+          "records": 1161,
+          "unique_published_image_ids": 1161,
+          "unique_camera_ids": 1159,
+          "valid_coordinate_records": 1160,
+          "schema": {
+            "root": "features[].attributes",
+            "id": "publishedImageId; namespace with OR",
+            "camera_id": "cameraId (not unique for each view)",
+            "name": "title",
+            "route": "route (trim whitespace)",
+            "lat": "latitude (WGS84 degrees)",
+            "lon": "longitude (WGS84 degrees)",
+            "image_file": "filename",
+            "ignored_stream_field": "videoId",
+            "geometry": "features[].geometry x/y are EPSG:3857; do not interpret as lon/lat"
+          },
+          "url_transform": "https://www.tripcheck.com/roadcams/cams/ + encodeURIComponent(filename)",
+          "allowed_image_hosts": [
+            "www.tripcheck.com",
+            "tripcheck.com"
+          ],
+          "allowed_path_prefix": "/roadcams/cams/ (case-insensitive)",
+          "filename_validation": "Reject slash, backslash, traversal segments; all observed filenames passed.",
+          "invalid_record": {
+            "publishedImageId": 4998,
+            "cameraId": 1314,
+            "title": "Clackamas Co - Oatfield Rd at Oak Grove Blvd",
+            "latitude": 45.4175,
+            "longitude": 226.0
+          },
+          "ownership_field": null,
+          "state_field": null,
+          "operational_status_field": null,
+          "media_timestamp_field": null
+        },
+        "verification": {
+          "catalog_read": true,
+          "all_media_verified": false,
+          "sample": {
+            "cameraId": 277,
+            "publishedImageId": 392,
+            "title": "US101 at Astoria - ODOT District Office",
+            "latitude": 46.18785,
+            "longitude": -123.85347,
+            "url": "https://www.tripcheck.com/roadcams/cams/AstoriaUS101MeglerBrNB_pid392.jpg",
+            "http_status": 200,
+            "content_type": "image/jpeg",
+            "bytes": 26777,
+            "visual_check": "Visible road scene, overlay says Oct 03 2026 2:25 PM; checked approximately 21:28 UTC on Oct 03 2026."
+          }
+        },
+        "polling": {
+          "inventory_recommendation_seconds": 86400,
+          "visible_snapshot_recommendation_seconds": 300,
+          "formal_rate_limit": null,
+          "basis": "Public map inventory config86400; official API catalog refresh24h; FAQ most camera images refresh5min. These are update cadences, not service quotas."
+        },
+        "cautions": [
+          "Catalog includes neighboring-state and local-agency cameras. Classify by geographic location when presenting state counts; do not label every record ODOT-owned.",
+          "Only one media sample visually inspected; show source timestamp/availability honestly.",
+          "Snapshots are not live video. Ignore videoId and TrafficLand links.",
+          "Use inventory as source data, do not copy TripCheck application code.",
+          "No guaranteed API stability for the public website asset; official API subscription remains a separate supported route."
+        ],
+        "sources": [
+          {
+            "url": "https://www.tripcheck.com/Pages/Frequently-Asked-Questions",
+            "supports": "Affirmative image/data use permission, direct URL reuse, credit, update cadence and separate TrafficLand arrangement"
+          },
+          {
+            "url": "https://www.tripcheck.com/Pages/Custom-Cameras",
+            "supports": "Public map source loading camera inventory"
+          },
+          {
+            "url": "https://www.tripcheck.com/Scripts/map/customcameras.min.js?639250225640000000",
+            "supports": "Inventory URL and86400-second inventory cadence"
+          },
+          {
+            "url": "https://www.tripcheck.com/Scripts/map/templates/ccentry_camera.min.js?639250224840000000",
+            "supports": "Exact public image filename transformation"
+          },
+          {
+            "url": "https://www.tripcheck.com/DynamicReports/Report/Cameras",
+            "supports": "Published camera names and direct image paths"
+          },
+          {
+            "url": "https://www.tripcheck.com/Pages/API",
+            "supports": "Cameras may be ODOT or partner owned; API catalog24h; separate developer signup"
+          },
+          {
+            "url": "https://www.oregon.gov/pages/terms-and-conditions.aspx",
+            "supports": "Statewide general terms reviewed; external destinations have their own terms"
+          }
+        ],
+        "local_evidence": [
+          "/workspace/shared/camera-research/or-inventory.json",
+          "/workspace/shared/camera-research/or-list.txt",
+          "/workspace/shared/camera-research/or-custom-js.txt",
+          "/workspace/shared/camera-research/or-camera-template.txt",
+          "/workspace/shared/camera-research/or-sample-image.jpg"
+        ]
+      },
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "no_key_integration_candidate"
+    },
+    {
+      "state_code": "PA",
+      "state_name": "Pennsylvania",
+      "public_view_url": "https://www.511pa.com/",
+      "public_view_status": "Public 511PA map/camera directory.",
+      "feed_url": "https://www.pa.gov/services/penndot/request-access-to-transportation-related-data-feeds",
+      "feed_access": "Request feed access from PennDOT; traffic video additionally requires Non-Exclusive Video Sharing License Agreement.",
+      "reuse_status": "Conditional redistribution allowed under data terms; traffic-camera images only for showing current traffic unless other use approved in writing. Additional video agreement required.",
+      "terms_url": "https://www.pa.gov/content/dam/copapwp-pagov/en/penndot/documents/programs-and-doing-business/onlineservices/511pa_developers_corner-tcs.pdf",
+      "cost_account": "No PennDOT data-feed charge, but streaming users pay their access bandwidth. Linked technical PDF describes network/setup costs; confirm current delivery method.",
+      "notes": "Attribution required; multi-user applications must replicate feed data to their own servers to reduce PennDOT load, preserve source integrity and avoid hiding sponsorship overlays. Linked technical guide describes RTSP streams or updating HTTP stills plus a Business Partner Network connection; verify whether that guide reflects current onboarding.",
+      "sources": [
+        "https://www.pa.gov/services/penndot/request-access-to-transportation-related-data-feeds",
+        "https://www.pa.gov/content/dam/copapwp-pagov/en/penndot/documents/programs-and-doing-business/onlineservices/511pa_developers_corner-tcs.pdf",
+        "https://www.pa.gov/content/dam/copapwp-pagov/en/penndot/documents/programs-and-doing-business/onlineservices/technical_requirements_to_access_video-final.pdf",
+        "https://www.511pa.com/"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "free_feed_agreement_and_delivery_costs",
+      "camera_media": "RTSP stream or updating HTTP still image per linked technical PDF.",
+      "blockers": [
+        "Approval, separate video license and network/bandwidth arrangement; exact endpoint issued after onboarding."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Use official portal link now; obtain video agreement and confirm delivery costs before integration.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "RI",
+      "state_name": "Rhode Island",
+      "public_view_url": "https://dot.ri.gov/travel/",
+      "public_view_status": "Public RIDOT live-camera directory by region; no login/payment shown.",
+      "feed_url": null,
+      "feed_access": "No official public camera API documentation located.",
+      "reuse_status": "Redistribution permission not verified.",
+      "terms_url": null,
+      "cost_account": "Public viewing available without login/payment; API costs/account requirements unknown.",
+      "notes": "RIDOT says cameras operate live only and do not store or record data. No camera inventory schema, image endpoint contract or polling limits verified.",
+      "sources": [
+        "https://dot.ri.gov/travel/",
+        "https://dot.ri.gov/about/help.php"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "public_portal_feed_unverified",
+      "blockers": [
+        "Need RIDOT supported feed and redistribution terms."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Official viewer link only; current supported camera API and redistribution permission unverified.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "SC",
+      "state_name": "South Carolina",
+      "public_view_url": "https://www.511sc.org/",
+      "public_view_status": "Free official 511SC public live cameras; account optional for favorites/alerts.",
+      "feed_url": null,
+      "feed_access": "No current official public camera API verified.",
+      "reuse_status": "Redistribution permission not verified.",
+      "terms_url": null,
+      "cost_account": "Public web/app viewing free; API price/account unknown.",
+      "notes": "SCDOT explicitly links 511SC for traffic cameras. The available official KML road-condition web service describes road events, not a camera feed, so it is not treated as camera API evidence. SCDOT says its camera stream is real-time with no images stored.",
+      "sources": [
+        "https://www.511sc.org/",
+        "https://www.511sc.org/static/tools.html",
+        "https://www.scdot.org/popular.html",
+        "https://www.scdot.org/inside/freedom-of-information-act.html",
+        "https://www.scdot.org/travel/travel-roadconditions.html"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "public_portal_feed_unverified",
+      "blockers": [
+        "Need officially supported camera feed, media contract and reuse rights."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Official viewer link only; current supported camera API and redistribution permission unverified.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "SD",
+      "state_name": "South Dakota",
+      "public_view_url": "https://www.sd511.org/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": null,
+      "feed_access": "no_current_documented_bulk_feed_verified",
+      "reuse_status": "unverified",
+      "terms_url": null,
+      "cost_account": "Public viewer: no payment apparent. Feed cost/account not verified.",
+      "notes": "Official SD511 help documents camera viewer and optional free account for favorites. A historical ArcGIS camera item was found, not accepted as current feed without owner/terms verification.",
+      "sources": [
+        "https://www.sd511.org/static/help.html",
+        "https://www.sd511.org/"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "launch_status": "needs_feed_and_permission",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "TN",
+      "state_name": "Tennessee",
+      "public_view_url": "https://smartway.tn.gov/allcams?region=All+Regions",
+      "public_view_status": "Official TDOT SmartWay public camera images and streaming video.",
+      "feed_url": null,
+      "feed_access": "No current documented public camera API verified. TDOT SmartWay event ArcGIS service exists but it is not a camera feed.",
+      "reuse_status": "Public viewing established; statewide camera redistribution or commercial-use permission not verified. Historical SmartView partner agreements are not a blanket public-app license.",
+      "reuse_category": "unknown",
+      "terms_url": null,
+      "cost_account": "No viewer charge/account requirement advertised; site warns streaming can affect mobile data charges. Developer-feed terms/cost unknown.",
+      "notes": "Avoid unverified third-party claims of a generic SmartWay /cameras/list REST API. ITS contact is TDOT.TrafficDesign.ITS@tn.gov. No endpoint fields or media path patterns verified.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://smartway.tn.gov/allcams?region=All+Regions",
+        "https://www.tn.gov/tdot/traffic-design/intelligent-transportation-systems.html",
+        "https://spatial.tdot.tn.gov/ArcGIS/rest/services/Smartway",
+        "https://www.arcgis.com/home/item.html?id=4cd31ac0b85348efa494a1636a2af75f"
+      ],
+      "launch_status": "Link out; camera API and reuse permission unresolved.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "TX",
+      "state_name": "Texas",
+      "public_view_url": "https://www.txdot.gov/discover/live-traffic-cameras.html",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": null,
+      "feed_access": "regional_camera_systems; no_supported_statewide_camera_api_verified",
+      "reuse_status": "unverified",
+      "terms_url": null,
+      "cost_account": "Public viewer: no payment apparent. Feed cost/account not verified.",
+      "notes": "Official TxDOT page links25 metro/district camera systems. DriveTexas documented API serves road conditions, NOT evidence of camera feed. TxDOT CCTV ArcGIS inventory found but media coverage/reuse not verified. Need district/TranStar permissions and schemas.",
+      "sources": [
+        "https://www.txdot.gov/discover/live-traffic-cameras.html",
+        "https://api.drivetexas.org/api-docs",
+        "https://maps.txdot.gov/createags/rest/services/Hosted/CCTV_Point/FeatureServer"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "launch_status": "needs_camera_feed_and_permission",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "UT",
+      "state_name": "Utah",
+      "public_view_url": "https://udottraffic.utah.gov/cctv",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://www.udottraffic.utah.gov/api/v2/get/cameras",
+      "feed_access": "documented_api_key_required",
+      "reuse_status": "developer_integration_invited_full_media_terms_unverified",
+      "terms_url": "https://udottraffic.utah.gov/about/disclaimer",
+      "cost_account": "Registered account + developer key required; fee not stated in reviewed docs.",
+      "notes": "Official developer API supports apps. Requires registered account and developer key. Documentation checked; no account created or keyed feed called. Views.Url is a camera page, not necessarily a directly embeddable image. Utah has existing app and public ArcGIS alternative; existing provider reuse terms still need review. Utah.gov general terms permit unchanged personal/informational copying/distribution unless restricted; no warranty against third-party rights. UDOT camera-specific redistribution terms not found.",
+      "sources": [
+        "https://udottraffic.utah.gov/developers/doc",
+        "https://udottraffic.utah.gov/help/endpoint/cameras",
+        "https://udottraffic.utah.gov/about/disclaimer",
+        "https://www.utah.gov/support/disclaimer.html"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "rate_limit": "10 requests per 60 seconds",
+      "schema": {
+        "id": "Id",
+        "coordinates": [
+          "Latitude",
+          "Longitude"
+        ],
+        "name": "Location or Roadway",
+        "views": "Views[].{Id,Url,Status,Description}",
+        "video": "Views[].VideoUrl documented for Nevada; not assume elsewhere"
+      },
+      "launch_status": "needs_key_and_terms_review",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement"
+    },
+    {
+      "state_code": "VA",
+      "state_name": "Virginia",
+      "public_view_url": "https://511.vdot.virginia.gov/",
+      "public_view_status": "Official public Virginia 511 traffic-camera viewer.",
+      "feed_url": "https://www.vdot.virginia.gov/news-events/media/",
+      "feed_access": "Iteris manages VDOT third-party camera access; API streaming formats or integrated portal supplied after an organization/company user agreement.",
+      "reuse_status": "Explicitly free for internal use or free public distribution; resale available for a monthly fee, under a user agreement.",
+      "terms_url": null,
+      "cost_account": "Free qualifying use; resale paid monthly. Request access via 511_videosubscription@iteris.com with organization/contact/intended use.",
+      "notes": "Current VDOT media page explicitly separates these licensing tiers. Exact API endpoint, formats, limits and agreement are supplied on request. SmarterRoads is a separate free-account transportation portal and should not be presumed to license this video. VDOT says it does not record camera footage.",
+      "sources": [
+        "https://www.vdot.virginia.gov/news-events/media/",
+        "https://511.vdot.virginia.gov/",
+        "https://smarterroads.vdot.virginia.gov/register",
+        "https://smarterroads.vdot.virginia.gov/termsOfService"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "free_nonresale_agreement_required",
+      "blockers": [
+        "Organization user agreement and issued endpoint; clarify whether intended product qualifies as free distribution versus resale."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Use official portal link now; approved free-distribution/internal-use API onboarding via Iteris.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "VT",
+      "state_name": "Vermont",
+      "public_view_url": "https://www.newengland511.org/cctv",
+      "public_view_status": "Public camera directory/map; ordinary viewing does not require an account.",
+      "feed_url": null,
+      "feed_access": "No current official camera API endpoint or developer onboarding verified.",
+      "reuse_status": "Unresolved for redistribution: state terms address downloading, storing and using traveler-information feeds, but a current camera-specific redistribution grant was not established.",
+      "terms_url": "https://www.newengland511.org/Cms/GetFile?id=0690f4fb-680f-ed11-ab23-0231beac5abc.133035771106400000",
+      "cost_account": "Public viewing free; optional My511 account for saved cameras/routes. Programmatic access price/account requirements unverified.",
+      "notes": "Shared Maine/NH/VT portal. State-specific terms say data is as-is, access may be terminated, and transaction limits may change. No published fixed polling limit located.",
+      "sources": [
+        "https://www.newengland511.org/cctv",
+        "https://www.newengland511.org/about/faq",
+        "https://www.newengland511.org/Cms/GetFile?id=0690f4fb-680f-ed11-ab23-0231beac5abc.133035771106400000",
+        "https://vtrans.vermont.gov/operations/rwis"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "public_portal_feed_unverified",
+      "blockers": [
+        "Current supported camera feed and reuse rights need agency confirmation."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Official viewer link only; current supported camera API and redistribution permission unverified.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "WA",
+      "state_name": "Washington",
+      "public_view_url": "https://wsdot.com/travel/real-time/map/",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": "https://www.wsdot.wa.gov/traffic/api/HighwayCameras/kml.aspx",
+      "feed_access": "Officially linked no-key KML/RSS and ArcGIS verified1706 records; REST access-code signup separate.",
+      "reuse_status": "third_party_api_invited; full_image_reuse_terms_unverified",
+      "terms_url": null,
+      "cost_account": "Access code email signup for API; pricing not stated; ArcGIS layer public.",
+      "notes": "Official API gateway for third parties includes camera REST/KML/RSS; access code obtained via email signup. Public ArcGIS Cameras layer also documented. Do not infer unrestricted commercial image reuse from availability. No signup performed. Follow-on verified1706 entries. KML/RSS omit owners, while keyed REST documents CameraOwner/OwnerURL. Copyright policy and partner content prevent unqualified media clearance; technical feed access itself is supported.",
+      "sources": [
+        "https://www.wsdot.wa.gov/traffic/api/",
+        "https://wsdot.wa.gov/traffic/api/HighwayCameras/HighwayCamerasREST.svc/Help",
+        "https://data.wsdot.wa.gov/arcgis/rest/services/TravelInformation/TravelInfoCamerasWeather/FeatureServer/0"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "rate_limit": "ArcGIS camera images approximately5min; quota not verified.",
+      "launch_status": "Needs camera-media use clarification/owner-aware inventory; no-key feed availability alone not unqualified public-media clearance.",
+      "followup_verification": {
+        "state_code": "WA",
+        "decision": "no_for_unqualified_public_media_launch",
+        "technical_access": "YES: officially linked no-key KML/RSS each returned1706 entries, and public ArcGIS query returned1706 camera records.",
+        "why_not_cleared": "Official API invitation clearly supports third-party traveler-data integration. However camera-media reuse is not resolved to the requested standard: copyright notice recommends permission because third-party content is included, and the general photo-use manual limits commercial gain. The no-key formats omit ownership fields, so they cannot reliably exclude partner media. This is not a claim that API integration is prohibited.",
+        "feed": {
+          "kml": "https://www.wsdot.wa.gov/traffic/api/HighwayCameras/kml.aspx",
+          "rss": "https://www.wsdot.wa.gov/traffic/api/HighwayCameras/rss.aspx",
+          "arcgis": "https://data.wsdot.wa.gov/arcgis/rest/services/TravelInformation/TravelInfoCamerasWeather/FeatureServer/0",
+          "query": "https://data.wsdot.wa.gov/arcgis/rest/services/TravelInformation/TravelInfoCamerasWeather/FeatureServer/0/query?where=1%3D1&outFields=*&returnGeometry=true&outSR=4326&f=pjson",
+          "records": 1706,
+          "schema": {
+            "kml_id": "Placemark @id (ID n)",
+            "kml_name": "Placemark/name",
+            "kml_coordinates": "Placemark/Point/coordinates (lon,lat)",
+            "kml_image": "img src inside Placemark/description CDATA",
+            "rss_id": "item/guid",
+            "rss_image": "item/link",
+            "rss_name": "item/title",
+            "rss_time": "a10:updated; not verified as per-frame timestamp",
+            "arcgis_id": "OBJECTID",
+            "arcgis_name": "CameraTitle",
+            "arcgis_image": "ImageURL",
+            "arcgis_direction": "CompassDirection",
+            "arcgis_geometry": "geometry x/y with outSR4326"
+          },
+          "owner_field_in_no_key_formats": false,
+          "owner_field_in_keyed_rest": "CameraOwner; docs define as owner when not WSDOT; OwnerURL also available"
+        },
+        "cost_account": "No key/account/payment for actual KML/RSS/ArcGIS reads. REST/WSDL API access-code email signup is separate; no fee established. ArcGIS terms specify low-volume use and may restrict/cancel access.",
+        "media_domain_counts": {
+          "images.wsdot.wa.gov": 1631,
+          "www.tripcheck.com": 63,
+          "tripcheck.com": 2,
+          "other_external_hosts": 10
+        },
+        "actual_media_playback_tested": false,
+        "next_step": "Clarify camera-image redistribution/commercial scope and obtain owner-aware inventory (documented keyed CameraOwner field) before enabling a general automatic adapter. Do not substitute host-only ownership filtering.",
+        "sources": [
+          {
+            "url": "https://www.wsdot.wa.gov/traffic/api/",
+            "supports": "Explicit third-party integration invitation and official KML/RSS links"
+          },
+          {
+            "url": "https://wsdot.wa.gov/traffic/api/Documentation/class_camera.html",
+            "supports": "Keyed schema CameraOwner and OwnerURL"
+          },
+          {
+            "url": "https://data.wsdot.wa.gov/arcgis/rest/services/TravelInformation/TravelInfoCamerasWeather/MapServer/info/iteminfo",
+            "supports": "Low-volume use terms and private-business use context"
+          },
+          {
+            "url": "https://wsdot.wa.gov/about/policies/web-privacy-notice",
+            "supports": "Copyright notice: third-party materials and permission recommendation"
+          },
+          {
+            "url": "https://www.wsdot.wa.gov/publications/manuals/fulltext/M3030/Communications.pdf",
+            "supports": "General photo policy attribution/non-commercial/no-alteration; not camera-specific clearance"
+          },
+          {
+            "url": "https://wsdot.wa.gov/about/policies/travel-information-disclaimer",
+            "supports": "As-is disclaimer alone does not establish media redistribution scope"
+          }
+        ]
+      },
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "developer_key_or_agreement",
+      "schema": null
+    },
+    {
+      "state_code": "WI",
+      "state_name": "Wisconsin",
+      "public_view_url": "https://511wi.gov/cctv",
+      "public_view_status": "Official 511WI public camera images and live video.",
+      "feed_url": "https://511wi.gov/api/v2/get/cameras",
+      "feed_access": "Documented JSON/XML API; key required after account and use-case approval. Limit 10 calls per 60 seconds. Current docs link v2; older getcameras docs also remain indexed.",
+      "reuse_status": "Explicit written WisDOT consent required BEFORE any commercial or public third-party use of data/video. API availability alone is not approval.",
+      "reuse_category": "agreement_required",
+      "terms_url": "https://511wi.gov/Cms/GetFile?id=60dc61b7-2bf0-ed11-abd6-06b534637530.133282862079100000",
+      "cost_account": "Public viewer available; API account/application required. No API fee stated in pages or reviewed agreement; do not assert unconditional free commercial access.",
+      "endpoint_fields": [
+        "Id",
+        "Source",
+        "SourceId",
+        "Roadway",
+        "Direction",
+        "Latitude",
+        "Longitude",
+        "Location",
+        "Views",
+        "Region",
+        "County",
+        "Views.Url",
+        "Views.VideoUrl",
+        "Views.Status"
+      ],
+      "image_video_patterns": "Docs show image https://511wi.gov/map/Cctv/1450 and HLS https://cctv1.dot.wi.gov:443/rtplive/CCTV-44-0081/playlist.m3u8 as examples. Use returned URLs; live playback not tested.",
+      "notes": "Developer agreement DOCX was downloaded and text inspected. WisDOT retains copyright; requires prominent unaltered attribution/logo or caption plus copyright notice, and forbids alteration. May demand a 511WI link and terminate sharing. Agreement version 2022-11-07, linked from current API page.",
+      "verified_date": "2026-10-03",
+      "sources": [
+        "https://511wi.gov/developers/doc",
+        "https://511wi.gov/developers/resources",
+        "https://511wi.gov/help/endpoint/cameras",
+        "https://511wi.gov/Cms/GetFile?id=60dc61b7-2bf0-ed11-abd6-06b534637530.133282862079100000"
+      ],
+      "launch_status": "Link out until explicit written WisDOT permission and API key approval.",
+      "playback_verified": false,
+      "verification_scope": "Official public viewer/documentation availability verified; individual live camera playback not tested.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "permission_restrictions",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "WV",
+      "state_name": "West Virginia",
+      "public_view_url": "https://wv511.org/CameraListing.aspx",
+      "public_view_status": "Public WV511 live streaming traffic cameras; FAQ documents map/list access.",
+      "feed_url": null,
+      "feed_access": "No current official public camera API documentation verified.",
+      "reuse_status": "Redistribution permission not verified.",
+      "terms_url": null,
+      "cost_account": "WV511 is described as a free public resource; no account needed for viewing. Feed cost/key requirements unknown.",
+      "notes": "Camera links are browsable by route. The FAQ specifically confirms live feeds; it does not confer third-party API or redistribution access.",
+      "sources": [
+        "https://wv511.org/CameraListing.aspx",
+        "https://www.wv511.org/faq.aspx",
+        "https://wv511.org/NetworkCoverage/usingWebsite.aspx"
+      ],
+      "verified_date": "2026-10-03",
+      "verification_scope": "Official public pages and documentation reviewed; no registration, credentials, bulk download, or individual live stream playback test.",
+      "integration_category": "public_portal_feed_unverified",
+      "blockers": [
+        "Need supported camera inventory/feed, reuse terms and limits."
+      ],
+      "actual_playback_verified": false,
+      "launch_status": "Official viewer link only; current supported camera API and redistribution permission unverified.",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "verification_level": "See notes; no universal live playback assertion",
+      "verified_at": "2026-10-03",
+      "rate_limit": null,
+      "schema": null
+    },
+    {
+      "state_code": "WY",
+      "state_name": "Wyoming",
+      "public_view_url": "https://www.wyoroad.info/Highway/webcameras/webcameras.html",
+      "public_view_status": "official_public_camera_service_confirmed",
+      "feed_url": null,
+      "feed_access": "public_camera_pages; gis_inventory_candidate",
+      "reuse_status": "unverified",
+      "terms_url": null,
+      "cost_account": "Public viewer: no payment apparent. Feed cost/account not verified.",
+      "notes": "WYDOT statewide/by-route public webcam pages. ArcGIS Live View Cameras Updates exists but looks infrastructure-planning-related, not verified playable feed; do not treat as production camera catalog.",
+      "sources": [
+        "https://www.wyoroad.info/Highway/webcameras/webcameras.html",
+        "https://gisservices.wyoroad.info/arcgis/rest/services/Live_View_Cameras_Updates/MapServer"
+      ],
+      "verified_at": "2026-10-03T21:18:00Z",
+      "verification_level": "official_documentation_or_page; no live camera playback verification",
+      "launch_status": "needs_supported_feed_and_permission",
+      "assessment_status": "reviewed_with_explicit_gaps",
+      "auto_enable_from_inventory": false,
+      "next_step_category": "feed_or_permission_unresolved",
+      "rate_limit": null,
+      "schema": null
+    }
+  ]
+}

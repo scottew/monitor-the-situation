@@ -17,12 +17,11 @@ Then open http://localhost:8080
 
 ## Web UI Features
 
-- Utah map (Leaflet / CartoDB Dark Matter) with live camera pins
+- Utah map (Leaflet / OpenFreeMap) with live camera pins
 - **Browse mode**: pan/zoom to filter cameras by viewport
-- **Circle mode**: click the map to place a monitoring radius (1–50 miles)
 - **Quick select**: SLC, Ogden, Provo, St. George, Logan, All Utah
 - **Route / text search** filters
-- **Column slider**: 1–20 columns (up to 20×20 = 400 feeds)
+- **Grid controls**: 1–20 columns (up to 20×20 = 400 feeds), plus a readable list view
 - **Pop-out modal**: click any camera; `←` `→` arrow keys to navigate, `ESC` to close
 - **Auto-refresh**: 30s / 60s / 2m / 5m intervals
 - **Keyboard shortcuts**: `F` focus search · `R` refresh all · `ESC` reset
@@ -116,3 +115,24 @@ monitor-the-situation/
     ├── mts-openclaw-tool.js  openclaw agent integration
     └── package.json
 ```
+
+## Map, mobile and camera sharing update
+
+- Basemap: OpenFreeMap Positron through MapLibre and Leaflet. No account, key, or paid plan is needed. Required OpenMapTiles / OpenStreetMap attribution is visible. The service is free including commercial use, but provided without an availability guarantee: [provider](https://openfreemap.org/), [terms](https://openfreemap.org/tos/).
+- Mapping libraries are vendored with their licenses so external script-CDN outages cannot stop the camera list. If WebGL or tiles fail, the list, search and camera sharing remain usable.
+- Phones start with a readable camera list, preserve grid density while moving the map, and use larger controls. The MAP / FEEDS button switches views.
+- Open a camera and choose SHARE. Supported devices use their native share sheet; other browsers offer copy-link with a selectable URL fallback. A URL with `?camera=ID` opens the camera after its state's manifest loads. Browser Back closes the camera; Forward restores it.
+- Camera names, roads and IDs are searchable. Image timestamps marked “Loaded” show browser retrieval time, not verified source freshness.
+- The state registry and California, Iowa and Oregon adapters are described in [state rollout](docs/STATE-ROLLOUT.md). New subdomain links remain disabled until hosting/DNS is verified.
+
+### Development checks
+
+Node 18+ is required by the application. Install test-only dependencies and run:
+
+```sh
+npm install
+npm test
+npm run check
+```
+
+Tests use a DOM environment and real Leaflet viewport events. They cover camera sharing/history, mobile density, safe rendering, unavailable-map fallbacks, malformed or empty manifests and state isolation. These checks do not replace visual checks in a WebGL-capable browser against a deployed preview.

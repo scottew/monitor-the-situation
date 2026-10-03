@@ -463,6 +463,13 @@ function cmdServe(args) {
       return;
     }
 
+    // Normalized, allowlisted state camera adapters (same route as Vercel).
+    if (pathname === '/api/cameras') {
+      req.query = Object.fromEntries(parsed.searchParams);
+      require('../api/cameras')(req, res);
+      return;
+    }
+
     // Camera name aggregation endpoint
     if (pathname === '/api/camnames') {
       serveCamNames(res);
@@ -525,6 +532,7 @@ function cmdServe(args) {
         '.html': 'text/html',
         '.css':  'text/css',
         '.js':   'application/javascript',
+        '.mjs':  'text/javascript',
         '.png':  'image/png',
         '.jpg':  'image/jpeg',
         '.svg':  'image/svg+xml',
