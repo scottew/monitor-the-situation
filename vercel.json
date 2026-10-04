@@ -1,13 +1,1 @@
-{
-  "rewrites": [
-    {
-      "source": "/api/proxy/:path*",
-      "destination": "/api/udot?p=/:path*"
-    }
-  ],
-  "functions": {
-    "api/*.js": {
-      "maxDuration": 30
-    }
-  }
-}
+{"git":{"deploymentEnabled":false}}
