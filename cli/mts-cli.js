@@ -16,7 +16,7 @@ const http    = require('http');
 const https   = require('https');
 const fs      = require('fs');
 const path    = require('path');
-const { execSync } = require('child_process');
+const { openUrl } = require('../lib/open-url');
 
 const UDOT_BASE = 'https://www.udottraffic.utah.gov';
 
@@ -310,12 +310,7 @@ async function cmdWeather(args) {
   }
 
   if (opts.open) {
-    const urls = show.map(c => c.imgUrl);
-    try {
-      execSync(`open "${show[0].imgUrl}"`); // macOS
-    } catch (_) {
-      try { execSync(`xdg-open "${show[0].imgUrl}"`); } catch (_) {}
-    }
+    openUrl(show[0].imgUrl);
   }
 
   if (opts.json) {
@@ -330,7 +325,7 @@ async function cmdShow(args) {
   const [cameraId, ...rest] = args;
   const opts = parseArgs(rest);
 
-  if (!cameraId) {
+  if (!cameraId || !/^\d{1,12}$/.test(cameraId)) {
     console.error(c('red', 'Usage: mts show <camera-id>'));
     process.exit(1);
   }
@@ -351,11 +346,7 @@ async function cmdShow(args) {
     }
   } else {
     if (opts.open || (!opts.json && process.stdout.isTTY)) {
-      try {
-        execSync(`open "${imgUrl}"`);
-      } catch (_) {
-        try { execSync(`xdg-open "${imgUrl}"`); } catch (_) {}
-      }
+      openUrl(imgUrl);
       console.log(c('green', `  Opened in browser.`));
     }
     if (opts.json) {
@@ -445,105 +436,19 @@ async function serveCamNames(res) {
 // Serves the web app + proxies UDOT API to solve CORS
 function cmdServe(args) {
   const opts = parseArgs(args);
-  const PORT = opts.port ? parseInt(opts.port) : 8080;
+  const PORT = opts.port === undefined ? 8080 : Number(opts.port);
+  const HOST = opts.host === undefined ? '127.0.0.1' : opts.host;
+  if (!Number.isInteger(PORT) || PORT < 1 || PORT > 65535) throw new Error('Port must be an integer from 1 to 65535');
+  if (typeof HOST !== 'string' || !require('net').isIP(HOST)) throw new Error('Host must be an explicit IP address');
   const WEB_DIR = path.join(__dirname, '..');
-
-  const server = http.createServer((req, res) => {
-    const parsed   = new URL(req.url, `http://localhost:${PORT}`);
-    const pathname = parsed.pathname;
-
-    // CORS headers
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-
-    if (req.method === 'OPTIONS') {
-      res.writeHead(204);
-      res.end();
-      return;
-    }
-
-    // Normalized, allowlisted state camera adapters (same route as Vercel).
-    if (pathname === '/api/cameras') {
-      req.query = Object.fromEntries(parsed.searchParams);
-      require('../api/cameras')(req, res);
-      return;
-    }
-
-    // Camera name aggregation endpoint
-    if (pathname === '/api/camnames') {
-      serveCamNames(res);
-      return;
-    }
-
-    // Proxy UDOT API — handles both /api/proxy/* and legacy /proxy/*
-    if (pathname.startsWith('/api/proxy/') || pathname.startsWith('/proxy/')) {
-      const targetPath = pathname.replace(/^\/(api\/)?proxy/, '');
-      const queryStr   = parsed.search || '';  // WHATWG URL .search includes '?'
-      const options    = {
-        hostname: 'www.udottraffic.utah.gov',
-        port: 443,
-        path: targetPath + queryStr,
-        method: req.method,
-        headers: {
-          'User-Agent': 'MTS-Proxy/1.0',
-          'Accept': req.headers.accept || '*/*',
-          'Referer': 'https://www.udottraffic.utah.gov/',
-        }
-      };
-
-      const proxyReq = https.request(options, proxyRes => {
-        res.writeHead(proxyRes.statusCode, {
-          'Content-Type': proxyRes.headers['content-type'] || 'application/octet-stream',
-          'Cache-Control': 'no-cache',
-          'Access-Control-Allow-Origin': '*',
-        });
-        proxyRes.pipe(res);
-      });
-      proxyReq.on('error', e => {
-        res.writeHead(502);
-        res.end(JSON.stringify({ error: e.message }));
-      });
-      req.pipe(proxyReq);
-      return;
-    }
-
-    // Serve static files
-    let filePath = pathname === '/' ? '/index.html' : pathname;
-    const fullPath = path.join(WEB_DIR, filePath);
-
-    // Path traversal guard
-    const resolved = path.resolve(fullPath);
-    const webRoot  = path.resolve(WEB_DIR);
-    if (!resolved.startsWith(webRoot + path.sep) && resolved !== webRoot) {
-      res.writeHead(403);
-      res.end('Forbidden');
-      return;
-    }
-
-    fs.readFile(resolved, (err, data) => {
-      if (err) {
-        res.writeHead(404);
-        res.end('Not found');
-        return;
-      }
-      const ext = path.extname(resolved);
-      const types = {
-        '.html': 'text/html',
-        '.css':  'text/css',
-        '.js':   'application/javascript',
-        '.mjs':  'text/javascript',
-        '.png':  'image/png',
-        '.jpg':  'image/jpeg',
-        '.svg':  'image/svg+xml',
-        '.json': 'application/json',
-      };
-      res.writeHead(200, { 'Content-Type': types[ext] || 'text/plain' });
-      res.end(data);
-    });
+  const allowRemote = !['127.0.0.1', '::1'].includes(HOST);
+  if (allowRemote) console.warn('[MTS] Network access enabled explicitly. This viewer is not an authenticated admin server.');
+  const server = require('../lib/local-server').createLocalServer({
+    root: WEB_DIR, allowRemote,
+    cameras: require('../api/cameras'), udot: require('../api/udot'), camnames: require('../api/camnames'),
   });
 
-  server.listen(PORT, '0.0.0.0', () => {
+  server.listen(PORT, HOST, () => {
     console.log('');
     console.log(c('cyan', '┌─────────────────────────────────────────────┐'));
     console.log(c('cyan', '│') + c('bold', '  MONITOR THE SITUATION — SERVER ONLINE') + c('cyan', '       │'));
@@ -557,10 +462,7 @@ function cmdServe(args) {
     // Auto-open browser (only in TTY unless --open forces it)
     const shouldOpen = opts.open || (process.stdout.isTTY && !opts['no-open']);
     if (shouldOpen && !process.env.NO_OPEN) {
-      try { execSync(`open http://localhost:${PORT}`); }
-      catch (_) {
-        try { execSync(`xdg-open http://localhost:${PORT}`); } catch (_) {}
-      }
+      openUrl(`http://localhost:${PORT}`);
     }
   });
 }
@@ -639,8 +541,9 @@ ${c('dim', 'COMMANDS')}
   ${c('green', 'show')}  ${c('yellow', '<camera-id>')}  ${c('dim', '[options]')}
     Show a specific camera. --save <file> to save image.
 
-  ${c('green', 'serve')}  ${c('dim', '[--port 8080]')}
-    Launch web UI with CORS proxy at http://localhost:8080
+  ${c('green', 'serve')}  ${c('dim', '[--port 8080] [--host IP]')}
+    Launch the loopback-only web UI at http://localhost:8080.
+    --host IP explicitly enables another bind address.
 
   ${c('green', 'ask')}  ${c('yellow', '"<natural language query>"')}
     Agent mode: parse a natural language request.

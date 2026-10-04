@@ -136,3 +136,11 @@ npm run check
 ```
 
 Tests use a DOM environment and real Leaflet viewport events. They cover camera sharing/history, mobile density, safe rendering, unavailable-map fallbacks, malformed or empty manifests and state isolation. These checks do not replace visual checks in a WebGL-capable browser against a deployed preview.
+
+### Server security boundaries
+
+Local `serve` binds to `127.0.0.1` by default. To intentionally expose the viewer to your network, supply an explicit IP with `--host` (for example `--host 0.0.0.0`). This is a public camera viewer, not an authenticated administration service. Local static serving is restricted to app assets; hidden files, repository metadata, source/configuration files and symlinks are denied, with no wildcard CORS.
+
+The Utah proxy accepts only the camera manifest and numeric camera-image paths, permits GET only, bounds response size and elapsed request time, validates status/content, and coalesces manifest requests. Compressed responses have a decompressed-size cap. Historical public diagnostics are disabled; camera names reuse the public manifest rather than probing user lists. Browser-launch commands use argument arrays instead of a shell.
+
+Automated tests cover these boundaries, but are not a penetration-test guarantee. Deployment protection, platform permissions, provider availability and a browser-level visual check remain separate requirements.

@@ -255,7 +255,8 @@ async function loadCameras(attempt) {
     if (iconData.source?.licenseUrl?.startsWith('https://')) {
       license.href = iconData.source.licenseUrl; license.hidden = false;
     } else license.hidden = true;
-    notify(iconData.partial ? 'Some districts are temporarily unavailable. Showing available cameras.' : iconData.stale ? 'Showing an older camera directory. Image age and availability vary.' : '');
+    const directoryStale = iconData.stale || r1.headers?.get('X-Cache') === 'STALE';
+    notify(iconData.partial ? 'Some districts are temporarily unavailable. Showing available cameras.' : directoryStale ? 'Showing an older camera directory. Image age and availability vary.' : '');
 
     setStatus(`ESTABLISHING ${cameras.length} FEEDS...`, 70);
     state.cameras = cameras;
