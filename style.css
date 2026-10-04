@@ -886,8 +886,8 @@ input[type="range"] {
 #camera-search { flex: 1; min-width: 0; font: inherit; padding: 8px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 4px; }
 #app-notice { padding: 10px 12px; font-size: 12px; line-height: 1.5; color: var(--text); background: var(--bg3); }
 .cam-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 6px 8px; background: #000b; color: #fff; font-size: 10px; line-height: 1.4; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; }
-#camera-grid.camera-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
-#camera-grid.camera-list .cam-cell { aspect-ratio: 16 / 10; }
+#camera-grid.camera-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; grid-auto-rows: max-content; align-items: start; }
+#camera-grid.camera-list .cam-cell { width: 100%; min-width: 0; aspect-ratio: 16 / 10; }
 #camera-grid.camera-list .cam-caption { white-space: normal; padding: 8px; font-size: 12px; }
 .camera-error { grid-column: 1/-1; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px; line-height: 1.5; }
 .camera-error h2 { font-size: 16px; }
