@@ -25,8 +25,8 @@ async function app({ url = 'https://utah.monitorit.app/', width = 390, cameras =
   if (withLeaflet) {
     w.eval(fs.readFileSync(path.join(root, 'vendor/leaflet/leaflet.js'), 'utf8'));
     const node=w.document.getElementById('map');
-    Object.defineProperty(node,'clientWidth',{value:280});
-    Object.defineProperty(node,'clientHeight',{value:240});
+    Object.defineProperty(node,'clientWidth',{value:280,configurable:true});
+    Object.defineProperty(node,'clientHeight',{value:240,configurable:true});
   }
   w.eval(fs.readFileSync(path.join(root,'state-config.js'),'utf8'));
   w.eval(fs.readFileSync(path.join(root,'camera-utils.js'),'utf8'));
@@ -186,5 +186,18 @@ test('missing WebGL2 never attaches a broken basemap or interrupts camera fittin
   assert.ok(d.querySelectorAll('.cam-cell').length > 0);
   a.openModal(a.state.cameras[0]);
   assert.equal(a.state.modalCam.id,'100');
+  dom.window.close();
+});
+
+test('hiding the mobile map does not replace camera feeds with an empty viewport', async () => {
+  const {dom,a,d} = await app({withLeaflet:true});
+  const before = a.state.filtered.map(c => c.id).join(',');
+  const container = a.state.map.getContainer();
+  Object.defineProperty(container,'clientWidth',{value:0});
+  Object.defineProperty(container,'clientHeight',{value:0});
+  a.state.map.invalidateSize({pan:false});
+  a.state.map.fire('moveend');
+  assert.equal(a.state.filtered.map(c => c.id).join(','),before);
+  assert.ok(d.querySelectorAll('.cam-cell').length > 0);
   dom.window.close();
 });

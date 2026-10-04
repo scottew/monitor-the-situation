@@ -174,7 +174,10 @@ function initMap() {
   map.attributionControl.addAttribution('<a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> · <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">© OpenMapTiles</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a>');
   // One event per completed move; programmatic fits are synchronous and suppressed.
   map.on('moveend', onMapChange);
-  new ResizeObserver(() => map.invalidateSize({ pan: false })).observe(document.getElementById('map'));
+  new ResizeObserver(() => {
+    const container = map.getContainer();
+    if (container.clientWidth && container.clientHeight) moveMap(() => map.invalidateSize({ pan: false }));
+  }).observe(document.getElementById('map'));
   loadBasemap();
 }
 
@@ -243,7 +246,7 @@ function moveMap(action) {
 }
 
 function onMapChange() {
-  if (state.programmaticMove) return;
+  if (state.programmaticMove || !state.map?.getContainer().clientWidth || !state.map?.getContainer().clientHeight) return;
   if (state.cameras.length) {
     state.useDefault = false;
     applyFilters();
@@ -862,7 +865,7 @@ function setMobileView(view) {
     sidebar.classList.remove('mobile-hidden');
     gridPanel.classList.remove('mobile-visible');
     if (btn) { btn.textContent = '⊞ FEEDS'; btn.classList.remove('active'); }
-    if (state.map) setTimeout(() => state.map.invalidateSize(), 50);
+    if (state.map) setTimeout(() => moveMap(() => state.map.invalidateSize({ pan: false })), 50);
   }
 }
 
