@@ -13,8 +13,12 @@ async function app({ url = 'https://utah.monitorit.app/', width = 390, cameras =
   await new Promise(resolve => w.addEventListener('load', resolve));
   Object.defineProperty(w, 'innerWidth', { value: width, writable:true });
   w.ResizeObserver = class { observe() {} };
+  w.HTMLCanvasElement.prototype.getContext = () => null;
   w.setInterval = () => 1;
-  w.setTimeout = (fn, delay) => { if (delay < 18000) queueMicrotask(fn); return 1; };
+  let timerId = 0;
+  const timers = new Set();
+  w.setTimeout = (fn, delay) => { const id = ++timerId; timers.add(id); if (delay < 18000) queueMicrotask(() => { if (timers.delete(id)) fn(); }); return id; };
+  w.clearTimeout = id => timers.delete(id);
   w.fetch = async () => ({ok:status < 400,status,json:async()=>response || {item2:cameras}});
   w.console.error = () => {};
   w.console.warn = () => {};
@@ -165,5 +169,22 @@ test('Iowa attribution includes license and discloses transformation',async()=>{
   assert.equal(d.querySelector('#source-license').hidden,false);
   assert.equal(d.querySelector('#source-license').href,'https://creativecommons.org/licenses/by/4.0/');
   assert.match(d.querySelector('#source-credit').textContent,/filtered and reformatted/);
+  dom.window.close();
+});
+
+test('missing WebGL2 never attaches a broken basemap or interrupts camera fitting', async () => {
+  const {dom,a,d} = await app({withLeaflet:true});
+  assert.equal(a.state.cameras.length,30);
+  assert.match(d.querySelector('#map-status').textContent,/Loading basic map/);
+  const tiles = Object.values(a.state.map._layers).filter(layer => layer instanceof dom.window.L.TileLayer);
+  assert.equal(tiles.length,1);
+  assert.equal(tiles[0].options.keepBuffer,0);
+  assert.equal(tiles[0].options.referrerPolicy,'strict-origin-when-cross-origin');
+  assert.equal(tiles[0]._url,'https://tile.openstreetmap.org/{z}/{x}/{y}.png');
+  assert.equal(d.querySelector('script[src*=leaflet-maplibre]'),null);
+  assert.doesNotThrow(() => a.state.map.setView([40.78,-111.89],12));
+  assert.ok(d.querySelectorAll('.cam-cell').length > 0);
+  a.openModal(a.state.cameras[0]);
+  assert.equal(a.state.modalCam.id,'100');
   dom.window.close();
 });

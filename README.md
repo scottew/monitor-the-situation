@@ -144,3 +144,7 @@ Local `serve` binds to `127.0.0.1` by default. To intentionally expose the viewe
 The Utah proxy accepts only the camera manifest and numeric camera-image paths, permits GET only, bounds response size and elapsed request time, validates status/content, and coalesces manifest requests. Compressed responses have a decompressed-size cap. Historical public diagnostics are disabled; camera names reuse the public manifest rather than probing user lists. Browser-launch commands use argument arrays instead of a shell.
 
 Automated tests cover these boundaries, but are not a penetration-test guarantee. Deployment protection, platform permissions, provider availability and a browser-level visual check remain separate requirements.
+
+### Basic map fallback
+
+When WebGL2 is unavailable or the vector renderer cannot initialize, a Leaflet raster layer requests only the current viewport from OpenStreetMap's standard tile service. It uses the canonical HTTPS tile URL, visible attribution, an origin Referer, and normal browser HTTP caching. It has no tile proxy, cache-busting, offline download, bulk download, or prefetch feature; the retained tile buffer is zero. This community service has limited capacity and no SLA. Heavy usage may be blocked without notice, so a larger deployment should arrange a suitable provider before relying on it. See the [tile usage policy](https://operations.osmfoundation.org/policies/tiles/) and [OSMF terms](https://wiki.osmfoundation.org/wiki/Terms_of_Use).

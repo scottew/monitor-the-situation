@@ -181,7 +181,13 @@ function initMap() {
 async function loadBasemap() {
   mapStatus('Loading map…');
   const timer = setTimeout(() => mapStatus('Map is taking longer to load. Camera list is still available.'), 15000);
+  let layer;
   try {
+    // Check before attaching the bridge: failed WebGL setup otherwise leaves
+    // Leaflet move handlers pointing at an uninitialized renderer.
+    const probe = document.createElement('canvas').getContext('webgl2');
+    if (!probe) throw new Error('WebGL2 is unavailable');
+    probe.getExtension('WEBGL_lose_context')?.loseContext();
     const gl = await import('./vendor/maplibre/maplibre-gl.mjs');
     gl.setWorkerUrl(new URL('./vendor/maplibre/maplibre-gl-worker.mjs', location.href).href);
     window.maplibregl = gl;
@@ -192,7 +198,8 @@ async function loadBasemap() {
       script.onerror = reject;
       document.head.appendChild(script);
     });
-    const layer = L.maplibreGL({ style: 'https://tiles.openfreemap.org/styles/positron', attributionControl: false }).addTo(state.map);
+    layer = L.maplibreGL({ style: 'https://tiles.openfreemap.org/styles/positron', attributionControl: false });
+    layer.addTo(state.map);
     const renderer = layer.getMaplibreMap();
     let hadMapError = false;
     renderer.on('error', () => { hadMapError = true; mapStatus('Some map tiles are unavailable. Camera list and sharing still work.'); });
@@ -200,10 +207,33 @@ async function loadBasemap() {
     renderer.on('webglcontextlost', () => mapStatus('Map graphics unavailable. Camera list and sharing still work.'));
   } catch (err) {
     clearTimeout(timer);
+    if (layer && state.map.hasLayer(layer)) {
+      // The bridge's normal removal expects a renderer, even when onAdd failed.
+      if (!layer.getMaplibreMap()) layer.onRemove = () => layer.getContainer()?.remove();
+      state.map.removeLayer(layer);
+    }
     console.warn('[MTS] Basemap unavailable:', err.message || err);
-    mapStatus('Map unavailable on this device. Camera list and sharing still work.');
-    setMobileView('feeds');
+    loadRasterFallback();
   }
+}
+
+
+function loadRasterFallback() {
+  // OSM standard tiles: only the active viewport, normal browser caching, and
+  // a valid origin Referer. No offline storage, proxy, prefetch or cache buster.
+  mapStatus('Loading basic map…');
+  let failed = false;
+  const raster = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, keepBuffer: 0, updateWhenIdle: true, updateWhenZooming: false,
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>',
+  });
+  raster.on('tileerror', () => {
+    failed = true;
+    mapStatus('Some basic map tiles are unavailable. Camera list and sharing still work.');
+  });
+  raster.on('load', () => { if (!failed) mapStatus('Basic map · limited community service'); });
+  raster.addTo(state.map);
 }
 
 function moveMap(action) {
