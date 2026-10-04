@@ -201,3 +201,15 @@ test('hiding the mobile map does not replace camera feeds with an empty viewport
   assert.ok(d.querySelectorAll('.cam-cell').length > 0);
   dom.window.close();
 });
+
+test('prepared states stay disabled in mobile state selection and do not fall back to Utah', async () => {
+  for (const code of ['AZ','GA','WI']) {
+    const {dom,a,d}=await app({url:`https://preview.vercel.app/?state=${code}`,status:503,response:{error:'Source not enabled'}});
+    const option=d.querySelector(`#state-select option[value="${code}"]`);
+    assert.equal(option.disabled,true);
+    assert.match(option.textContent,/awaiting approval/);
+    assert.equal(a.state.cameras.length,0);
+    assert.equal(a.state.modalCam,null);
+    dom.window.close();
+  }
+});

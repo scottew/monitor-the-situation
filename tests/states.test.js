@@ -37,7 +37,7 @@ function request(query, method = 'GET') {
 }
 test('unknown, restricted and unverified states fail closed without Utah cameras',async()=>{
   assert.equal((await request({state:'ZZ'})).status,400);
-  for (const state of ['NY','AR','AL','ND']) {
+  for (const state of ['NY','AR','AL','ND','AZ','GA','WI']) {
     const r=await request({state}); assert.equal(r.status,503); assert.equal(r.data.code,'SOURCE_NOT_ENABLED'); assert.equal(r.data.cameras,undefined);
   }
   assert.equal((await request({state:'CA'},'POST')).status,405);

@@ -51,10 +51,13 @@
     },
     "timezone": "America/Phoenix",
     "status": "pending",
-    "sourceName": "",
+    "sourceName": "Arizona DOT",
     "sourceUrl": "https://www.az511.gov/",
     "officialViewerUrl": "https://www.az511.gov/",
-    "deployed": false
+    "deployed": false,
+    "integrationPrepared": true,
+    "minRefreshSeconds": 300,
+    "availabilityNote": "Awaiting secure setup and shared quota controls"
   },
   {
     "code": "AR",
@@ -170,10 +173,13 @@
     },
     "timezone": "America/New_York",
     "status": "pending",
-    "sourceName": "",
+    "sourceName": "Georgia DOT",
     "sourceUrl": "https://511ga.org/",
     "officialViewerUrl": "https://511ga.org/",
-    "deployed": false
+    "deployed": false,
+    "integrationPrepared": true,
+    "minRefreshSeconds": 300,
+    "availabilityNote": "Awaiting secure setup and shared quota controls"
   },
   {
     "code": "HI",
@@ -833,11 +839,14 @@
       "count": 25
     },
     "timezone": "America/Chicago",
-    "status": "pending",
-    "sourceName": "",
+    "status": "restricted",
+    "sourceName": "Wisconsin DOT",
     "sourceUrl": "https://511wi.gov/cctv",
     "deployed": false,
-    "officialViewerUrl": "https://511wi.gov/cctv"
+    "officialViewerUrl": "https://511wi.gov/cctv",
+    "integrationPrepared": true,
+    "minRefreshSeconds": 300,
+    "availabilityNote": "Awaiting reuse permission and shared quota controls"
   },
   {
     "code": "WY",

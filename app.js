@@ -128,7 +128,7 @@ function initStateControls() {
     const ready = ['ready', 'existing'].includes(item.status);
     const canonicalHost = location.hostname.endsWith('.monitorit.app');
     option.disabled = !ready || (canonicalHost && !item.deployed && item.code !== currentState?.code);
-    option.textContent = item.name + (['ready', 'existing'].includes(item.status) ? '' : ' — not connected');
+    option.textContent = item.name + (['ready', 'existing'].includes(item.status) ? '' : item.integrationPrepared ? ' — awaiting approval' : ' — not connected');
     option.selected = item.code === currentState?.code;
     select.appendChild(option);
   });

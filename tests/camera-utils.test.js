@@ -19,3 +19,11 @@ test('invalid or duplicate camera data never creates broken markers', () => {
 test('phone grid starts at two columns', () => {
   assert.equal(utils.defaultGridSize(390),2); assert.equal(utils.defaultGridSize(600),2); assert.equal(utils.defaultGridSize(601),5);
 });
+
+test('prepared state camera shares retain routing but never propagate arbitrary URL credentials', () => {
+  for (const code of ['AZ','GA','WI']) {
+    const id = `${code.toLowerCase()}-2056-960`;
+    const link = utils.cameraUrl(`https://preview.vercel.app/?state=${code}&key=synthetic&token=synthetic#debug`,id);
+    assert.equal(link,`https://preview.vercel.app/?state=${code}&camera=${id}`);
+  }
+});

@@ -10,6 +10,9 @@
     },
     cameraUrl(href, id) {
       const url = new URL(href);
+      const state = url.searchParams.get('state');
+      url.search = '';
+      if (state) url.searchParams.set('state', state);
       url.searchParams.set('camera', String(id));
       url.hash = '';
       return url.href;

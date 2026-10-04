@@ -21,19 +21,20 @@ module.exports = async function cameras(req, res) {
   const selected = get(req.query && req.query.state);
   if (!selected) return send(res, 400, { error: 'A valid state code or slug is required.', code: 'INVALID_STATE' });
   const source = SOURCES[selected.code];
-  if (!source) return send(res, 503, {
+  if (!source || (source.isEnabled && !source.isEnabled())) return send(res, 503, {
     error: selected.status === 'restricted' ? 'This source is not enabled because its reuse terms restrict integration.' :
       'Camera integration for this state has not yet been verified and enabled.',
     code: 'SOURCE_NOT_ENABLED', state: selected.code, sourceUrl: selected.sourceUrl || null,
   });
-  const previous = cache.get(selected.code);
-  if (previous && Date.now() - previous.at < (source.cacheTtlMs || FRESH_MS)) return send(res, 200, { ...previous.data, stale: false });
+  const candidate = cache.get(selected.code);
+  const previous = candidate && (!candidate.data.expiresAt || Date.parse(candidate.data.expiresAt) > Date.now()) ? candidate : null;
+  if (previous && Date.now() - previous.at < (source.cacheTtlMs || FRESH_MS)) return send(res, 200, { ...previous.data });
   try {
     if (!inFlight.has(selected.code)) {
       inFlight.set(selected.code, source.load(fetchJson).then(result => {
         const data = { state: selected.code, source: { name: source.name, url: source.url,
           termsUrl: source.termsUrl, licenseUrl: source.licenseUrl || null, attribution: source.attribution }, ...result,
-          fetchedAt: new Date().toISOString(), stale: false };
+          fetchedAt: result.sourceFetchedAt || new Date().toISOString(), stale: result.stale === true };
         cache.set(selected.code, { at: Date.now(), data });
         return data;
       }).finally(() => inFlight.delete(selected.code)));
