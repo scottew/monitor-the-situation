@@ -17,12 +17,11 @@ Then open http://localhost:8080
 
 ## Web UI Features
 
-- Utah map (Leaflet / CartoDB Dark Matter) with live camera pins
+- Utah map (Leaflet / OpenFreeMap) with live camera pins
 - **Browse mode**: pan/zoom to filter cameras by viewport
-- **Circle mode**: click the map to place a monitoring radius (1–50 miles)
 - **Quick select**: SLC, Ogden, Provo, St. George, Logan, All Utah
 - **Route / text search** filters
-- **Column slider**: 1–20 columns (up to 20×20 = 400 feeds)
+- **Grid controls**: 1–20 columns (up to 20×20 = 400 feeds), plus a readable list view
 - **Pop-out modal**: click any camera; `←` `→` arrow keys to navigate, `ESC` to close
 - **Auto-refresh**: 30s / 60s / 2m / 5m intervals
 - **Keyboard shortcuts**: `F` focus search · `R` refresh all · `ESC` reset
@@ -116,3 +115,36 @@ monitor-the-situation/
     ├── mts-openclaw-tool.js  openclaw agent integration
     └── package.json
 ```
+
+## Map, mobile and camera sharing update
+
+- Basemap: OpenFreeMap Positron through MapLibre and Leaflet. No account, key, or paid plan is needed. Required OpenMapTiles / OpenStreetMap attribution is visible. The service is free including commercial use, but provided without an availability guarantee: [provider](https://openfreemap.org/), [terms](https://openfreemap.org/tos/).
+- Mapping libraries are vendored with their licenses so external script-CDN outages cannot stop the camera list. If WebGL or tiles fail, the list, search and camera sharing remain usable.
+- Phones start with a readable camera list, preserve grid density while moving the map, and use larger controls. The MAP / FEEDS button switches views.
+- Open a camera and choose SHARE. Supported devices use their native share sheet; other browsers offer copy-link with a selectable URL fallback. A URL with `?camera=ID` opens the camera after its state's manifest loads. Browser Back closes the camera; Forward restores it.
+- Camera names, roads and IDs are searchable. Image timestamps marked “Loaded” show browser retrieval time, not verified source freshness.
+- The state registry and California, Iowa and Oregon adapters are described in [state rollout](docs/STATE-ROLLOUT.md). New subdomain links remain disabled until hosting/DNS is verified.
+
+### Development checks
+
+Node 18+ is required by the application. Install test-only dependencies and run:
+
+```sh
+npm install
+npm test
+npm run check
+```
+
+Tests use a DOM environment and real Leaflet viewport events. They cover camera sharing/history, mobile density, safe rendering, unavailable-map fallbacks, malformed or empty manifests and state isolation. These checks do not replace visual checks in a WebGL-capable browser against a deployed preview.
+
+### Server security boundaries
+
+Local `serve` binds to `127.0.0.1` by default. To intentionally expose the viewer to your network, supply an explicit IP with `--host` (for example `--host 0.0.0.0`). This is a public camera viewer, not an authenticated administration service. Local static serving is restricted to app assets; hidden files, repository metadata, source/configuration files and symlinks are denied, with no wildcard CORS.
+
+The Utah proxy accepts only the camera manifest and numeric camera-image paths, permits GET only, bounds response size and elapsed request time, validates status/content, and coalesces manifest requests. Compressed responses have a decompressed-size cap. Historical public diagnostics are disabled; camera names reuse the public manifest rather than probing user lists. Browser-launch commands use argument arrays instead of a shell.
+
+Automated tests cover these boundaries, but are not a penetration-test guarantee. Deployment protection, platform permissions, provider availability and a browser-level visual check remain separate requirements.
+
+### Basic map fallback
+
+When WebGL2 is unavailable or the vector renderer cannot initialize, a Leaflet raster layer requests only the current viewport from OpenStreetMap's standard tile service. It uses the canonical HTTPS tile URL, visible attribution, an origin Referer, and normal browser HTTP caching. It has no tile proxy, cache-busting, offline download, bulk download, or prefetch feature; the retained tile buffer is zero. This community service has limited capacity and no SLA. Heavy usage may be blocked without notice, so a larger deployment should arrange a suitable provider before relying on it. See the [tile usage policy](https://operations.osmfoundation.org/policies/tiles/) and [OSMF terms](https://wiki.osmfoundation.org/wiki/Terms_of_Use).

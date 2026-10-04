@@ -8,7 +8,9 @@ const PROXY_PFX = '/api/proxy';
 const IMG_BASE  = `${PROXY_PFX}/map/Cctv`;
 
 // Default home: Temple Square, SLC
-const HOME = { lat: 40.7705, lng: -111.8910, zoom: 14, count: 25 };
+const currentState = window.MTSStates?.resolve(location.hostname, location.search);
+const HOME = currentState?.home || { lat: 40.7705, lng: -111.8910, zoom: 14, count: 25 };
+const utils = window.MTSCameraUtils;
 
 // ── State ──────────────────────────────────────
 const state = {
@@ -21,10 +23,13 @@ const state = {
   fitAfterFilter:   false, // fit map bounds to grid results on next renderGrid call
   gridSize:         5,     // N in the current N×N display
   refreshTimer:  null,
-  refreshRate:   60000,
+  refreshRate:   Math.max(60000, (currentState?.minRefreshSeconds || 0) * 1000),
   cols:          5,
   modalIdx:     -1,
   modalCam:     null,
+  listView: window.innerWidth <= 600,
+  modalHistoryPushed: false,
+  modalReturnFocus: null,
   refreshCache: {},   // cameraId → timestamp
 };
 
@@ -34,11 +39,14 @@ window.addEventListener('DOMContentLoaded', init);
 async function init() {
   initDarkMode();
   startClock();
+  initStateControls();
   initMap();
   initResizer();
   initModalTouch();
   bindControls();
-  if (window.innerWidth <= 600) state.gridSize = 2;
+  state.gridSize = utils.defaultGridSize(window.innerWidth);
+  updateListView();
+  window.addEventListener('popstate', openSharedCamera);
   await loadCameras();
   startRefreshCycle();
   // startPresence();
@@ -50,7 +58,7 @@ function startClock() {
   const tick = () => {
     const d = new Date();
     el.textContent = d.toLocaleTimeString('en-US', {
-      hour12: false, timeZone: 'America/Denver',
+      hour12: false, timeZone: currentState?.timezone || 'America/Denver',
       hour: '2-digit', minute: '2-digit', second: '2-digit'
     });
   };
@@ -99,32 +107,146 @@ function initResizer() {
 }
 
 // ── Map ────────────────────────────────────────
-function initMap() {
-  const map = L.map('map', {
-    center: [HOME.lat, HOME.lng],
-    zoom: HOME.zoom,
-    zoomControl: true,
-    attributionControl: false,
+function notify(message) {
+  const node = document.getElementById('app-notice');
+  node.textContent = message;
+  node.hidden = !message;
+}
+
+function mapStatus(message) {
+  const node = document.getElementById('map-status');
+  node.textContent = message;
+  node.hidden = !message;
+}
+
+function initStateControls() {
+  const select = document.getElementById('state-select');
+  const entries = window.MTSStates?.states || [];
+  Object.values(entries).forEach(item => {
+    const option = document.createElement('option');
+    option.value = item.code;
+    const ready = ['ready', 'existing'].includes(item.status);
+    const canonicalHost = location.hostname.endsWith('.monitorit.app');
+    option.disabled = !ready || (canonicalHost && !item.deployed && item.code !== currentState?.code);
+    option.textContent = item.name + (['ready', 'existing'].includes(item.status) ? '' : item.integrationPrepared ? ' — awaiting approval' : ' — not connected');
+    option.selected = item.code === currentState?.code;
+    select.appendChild(option);
   });
-  state.programmaticMove = true; // suppress the initial moveend on load
+  select.addEventListener('change', () => {
+    const next = window.MTSStates.get(select.value);
+    const url = new URL(location.href);
+    url.searchParams.delete('camera');
+    // State query links work on the existing host while new subdomains await DNS.
+    // Canonical state hosts remain authoritative; route through the root path preview.
+    if (location.hostname.endsWith('.monitorit.app')) {
+      url.hostname = next.slug + '.monitorit.app';
+      url.searchParams.delete('state');
+    } else url.searchParams.set('state', next.code);
+    location.assign(url.href);
+  });
+  const source = document.getElementById('source-link');
+  if (currentState?.sourceUrl) source.href = currentState.sourceUrl;
+  else source.hidden = true;
+  source.textContent = currentState?.sourceName || 'Camera source';
+  const credit = document.getElementById('source-credit');
+  credit.textContent = `Images provided by ${currentState?.sourceName || currentState?.name || 'the official source'}. Image age and availability vary.`;
+  document.querySelector('.logo-sub').textContent = currentState?.code === 'OR' ? '// TRIPCHECK COVERAGE' : `// ${currentState?.name || 'UNKNOWN STATE'} TRAFFIC CAMERAS`;
+  document.getElementById('clock-zone').textContent = currentState?.code || 'MT';
+  document.title = `${currentState?.name || 'Monitor the Situation'} traffic cameras | Monitor the Situation`;
+  document.getElementById('coverage-note').hidden = currentState?.code !== 'OR';
+  document.getElementById('region-section').hidden = currentState?.code !== 'UT';
+  const refresh = document.getElementById('refresh-rate');
+  [...refresh.options].forEach(option => { option.disabled = Number(option.value) > 0 && Number(option.value) < (currentState?.minRefreshSeconds || 0) * 1000; });
+  refresh.value = String(state.refreshRate);
+}
 
-  // CartoDB Positron — pixel-crisp black labels on white.
-  // CSS invert() flips it: pure white roads/labels on dark background.
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    maxZoom: 19,
-    subdomains: 'abcd',
-  }).addTo(map);
-
+function initMap() {
+  if (!window.L) {
+    mapStatus('Map unavailable. Camera list and sharing still work.');
+    return;
+  }
+  const map = L.map('map', {
+    center: [HOME.lat, HOME.lng], zoom: HOME.zoom, maxZoom: 19,
+    zoomControl: true, attributionControl: true,
+  });
   state.map = map;
+  map.attributionControl.setPrefix(false);
+  map.attributionControl.addAttribution('<a href="https://openfreemap.org/" target="_blank" rel="noopener">OpenFreeMap</a> · <a href="https://www.openmaptiles.org/" target="_blank" rel="noopener">© OpenMapTiles</a> · <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OpenStreetMap</a>');
+  // One event per completed move; programmatic fits are synchronous and suppressed.
+  map.on('moveend', onMapChange);
+  new ResizeObserver(() => {
+    const container = map.getContainer();
+    if (container.clientWidth && container.clientHeight) moveMap(() => map.invalidateSize({ pan: false }));
+  }).observe(document.getElementById('map'));
+  loadBasemap();
+}
 
-  map.on('moveend zoomend', onMapChange);
+async function loadBasemap() {
+  mapStatus('Loading map…');
+  const timer = setTimeout(() => mapStatus('Map is taking longer to load. Camera list is still available.'), 15000);
+  let layer;
+  try {
+    // Check before attaching the bridge: failed WebGL setup otherwise leaves
+    // Leaflet move handlers pointing at an uninitialized renderer.
+    const probe = document.createElement('canvas').getContext('webgl2');
+    if (!probe) throw new Error('WebGL2 is unavailable');
+    probe.getExtension('WEBGL_lose_context')?.loseContext();
+    const gl = await import('./vendor/maplibre/maplibre-gl.mjs');
+    gl.setWorkerUrl(new URL('./vendor/maplibre/maplibre-gl-worker.mjs', location.href).href);
+    window.maplibregl = gl;
+    await new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = 'vendor/maplibre/leaflet-maplibre-gl.js';
+      script.onload = resolve;
+      script.onerror = reject;
+      document.head.appendChild(script);
+    });
+    layer = L.maplibreGL({ style: 'https://tiles.openfreemap.org/styles/positron', attributionControl: false });
+    layer.addTo(state.map);
+    const renderer = layer.getMaplibreMap();
+    let hadMapError = false;
+    renderer.on('error', () => { hadMapError = true; mapStatus('Some map tiles are unavailable. Camera list and sharing still work.'); });
+    renderer.on('idle', () => { clearTimeout(timer); if (!hadMapError) mapStatus(''); });
+    renderer.on('webglcontextlost', () => mapStatus('Map graphics unavailable. Camera list and sharing still work.'));
+  } catch (err) {
+    clearTimeout(timer);
+    if (layer && state.map.hasLayer(layer)) {
+      // The bridge's normal removal expects a renderer, even when onAdd failed.
+      if (!layer.getMaplibreMap()) layer.onRemove = () => layer.getContainer()?.remove();
+      state.map.removeLayer(layer);
+    }
+    console.warn('[MTS] Basemap unavailable:', err.message || err);
+    loadRasterFallback();
+  }
+}
+
+
+function loadRasterFallback() {
+  // OSM standard tiles: only the active viewport, normal browser caching, and
+  // a valid origin Referer. No offline storage, proxy, prefetch or cache buster.
+  mapStatus('Loading basic map…');
+  let failed = false;
+  const raster = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19, keepBuffer: 0, updateWhenIdle: true, updateWhenZooming: false,
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>',
+  });
+  raster.on('tileerror', () => {
+    failed = true;
+    mapStatus('Some basic map tiles are unavailable. Camera list and sharing still work.');
+  });
+  raster.on('load', () => { if (!failed) mapStatus('Basic map · limited community service'); });
+  raster.addTo(state.map);
+}
+
+function moveMap(action) {
+  if (!state.map) return;
+  state.programmaticMove = true;
+  try { action(); } finally { state.programmaticMove = false; }
 }
 
 function onMapChange() {
-  if (state.programmaticMove) {
-    state.programmaticMove = false;
-    return; // ignore moveend fired by our own setView calls
-  }
+  if (state.programmaticMove || !state.map?.getContainer().clientWidth || !state.map?.getContainer().clientHeight) return;
   if (state.cameras.length) {
     state.useDefault = false;
     applyFilters();
@@ -142,36 +264,32 @@ async function loadCameras(attempt) {
   );
 
   try {
-    const r1   = await fetch(`${PROXY_PFX}/map/mapIcons/Cameras`, {
-      headers: { 'Accept': 'application/json' }
-    });
-    const text = await r1.text();
-
+    if (!currentState) throw new Error('This state subdomain is not configured.');
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 18000);
+    let r1;
     let iconData;
-    try { iconData = JSON.parse(text); }
-    catch (_) { throw new Error('UDOT returned non-JSON: ' + text.slice(0, 60)); }
-
-    if (iconData.error) throw new Error(iconData.error);
-
-    const iconItems = iconData.item2 || [];
-
-    // Empty item2 on a valid JSON response — retry once more before giving up
-    if (!iconItems.length && attempt < MAX) {
-      await new Promise(r => setTimeout(r, 1500 * attempt));
-      return loadCameras(attempt + 1);
-    }
-
-    setStatus(`PARSING ${iconItems.length} CAMERA POSITIONS...`, 40);
-
-    // Convert to our format (fast path — just positions)
-    const cameras = iconItems.map(item => ({
-      id:       item.itemId,
-      lat:      item.location[0],
-      lng:      item.location[1],
-      location: item.title || `CAM-${item.itemId}`,
-      roadway:  '',
-      imgUrl:   `${IMG_BASE}/${item.itemId}`,
-    }));
+    try {
+      const endpoint = currentState.code === 'UT'
+        ? `${PROXY_PFX}/map/mapIcons/Cameras`
+        : `/api/cameras?state=${encodeURIComponent(currentState.code)}`;
+      r1 = await fetch(endpoint, { headers: { Accept: 'application/json' }, signal: controller.signal });
+      iconData = await r1.json();
+    } finally { clearTimeout(timeout); }
+    if (!r1.ok || iconData.error) throw new Error(iconData.error || `Camera service returned HTTP ${r1.status}`);
+    const items = currentState.code === 'UT' ? (iconData.item2 || []).map(item => ({
+      id: item.itemId, lat: item.location?.[0], lng: item.location?.[1],
+      location: item.title || `CAM-${item.itemId}`, roadway: '', imgUrl: `${IMG_BASE}/${item.itemId}`,
+    })) : iconData.cameras;
+    const cameras = utils.normaliseCameras(items);
+    if (!cameras.length) throw new Error('No camera positions are available from the source. Please try again later.');
+    if (iconData.source?.attribution) document.getElementById('source-credit').textContent = iconData.source.attribution + (iconData.source.licenseUrl ? ' Camera data filtered and reformatted for this viewer.' : '');
+    const license = document.getElementById('source-license');
+    if (iconData.source?.licenseUrl?.startsWith('https://')) {
+      license.href = iconData.source.licenseUrl; license.hidden = false;
+    } else license.hidden = true;
+    const directoryStale = iconData.stale || r1.headers?.get('X-Cache') === 'STALE';
+    notify(iconData.partial ? 'Some districts are temporarily unavailable. Showing available cameras.' : directoryStale ? 'Showing an older camera directory. Image age and availability vary.' : '');
 
     setStatus(`ESTABLISHING ${cameras.length} FEEDS...`, 70);
     state.cameras = cameras;
@@ -188,14 +306,15 @@ async function loadCameras(attempt) {
     setTimeout(hideLoading, 400);
 
     updateStats();
+    openSharedCamera();
   } catch (err) {
     console.error(`[MTS] Attempt ${attempt} failed:`, err.message);
-    if (attempt < MAX) {
+    if (attempt < MAX && currentState && ['ready', 'existing'].includes(currentState.status)) {
       setStatus(`RETRYING... (${attempt + 1}/${MAX})`, 20);
       await new Promise(r => setTimeout(r, 2000 * attempt));
       return loadCameras(attempt + 1);
     }
-    setStatus('ERROR: FAILED TO CONNECT TO UDOT', 100);
+    setStatus('CAMERA SERVICE UNAVAILABLE', 100);
     loadDemoFallback(err.message);
     setTimeout(hideLoading, 600);
   }
@@ -211,7 +330,7 @@ const camIconNormal = () => L.divIcon({
     <line x1="7"   y1="5.5" x2="11"  y2="5.5" stroke="#000000" stroke-width="1.5"/>
     <rect x="3.5" y="3.5" width="4" height="4" fill="#000000" fill-opacity="0.8"/>
   </svg>`,
-  iconSize: [11, 11], iconAnchor: [5, 5],
+  iconSize: [28, 28], iconAnchor: [14, 14],
 });
 
 const camIconHot = () => L.divIcon({
@@ -245,19 +364,19 @@ function addMapMarkers(cameras) {
   state.markers.forEach(m => m.remove());
   state.markers = [];
 
+  if (!state.map) return;
   cameras.forEach(cam => {
-    if (!cam.lat || !cam.lng) return;
     const m = L.marker([cam.lat, cam.lng], { icon: camIconNormal() })
       .addTo(state.map)
       .on('click', () => openModal(cam))
       .on('mouseover', () => {
         highlightMarker(cam.id);
-        const cell = document.querySelector(`.cam-cell[data-id="${cam.id}"]`);
+        const cell = document.querySelector(`.cam-cell[data-id="${CSS.escape(String(cam.id))}"]`);
         if (cell) cell.classList.add('map-hover');
       })
       .on('mouseout', () => {
         unhighlightMarker(cam.id);
-        const cell = document.querySelector(`.cam-cell[data-id="${cam.id}"]`);
+        const cell = document.querySelector(`.cam-cell[data-id="${CSS.escape(String(cam.id))}"]`);
         if (cell) cell.classList.remove('map-hover');
       });
     m.camId = cam.id;
@@ -268,8 +387,10 @@ function addMapMarkers(cameras) {
 // ── Filter / Render ────────────────────────────
 
 function applyFilters() {
-  state.gridSize = 5; // every new filter resets to 5×5 default
+  // Preserve the chosen density while moving the map or searching.
   let cams = [...state.cameras];
+  const query = document.getElementById('camera-search').value.trim().toLowerCase();
+  if (query) cams = cams.filter(c => `${c.id} ${c.location} ${c.roadway}`.toLowerCase().includes(query));
 
   // Default view: 25 closest cameras to Temple Square
   if (state.useDefault) {
@@ -284,7 +405,7 @@ function applyFilters() {
   }
 
   // Viewport filter
-  const bounds = state.map.getBounds();
+  const bounds = state.map?.getBounds();
   if (bounds) {
     cams = cams.filter(c =>
       c.lat >= bounds.getSouth() &&
@@ -308,8 +429,7 @@ function syncMarkerVisibility() {
 function fitToGrid(cams) {
   if (!cams.length || !state.map) return;
   const bounds = L.latLngBounds(cams.map(c => [c.lat, c.lng]));
-  state.programmaticMove = true;
-  state.map.fitBounds(bounds, { padding: [20, 20], maxZoom: 16 });
+  moveMap(() => state.map.fitBounds(bounds, { padding: [20, 20], maxZoom: 16, animate: false }));
 }
 
 function renderGrid(cameras) {
@@ -358,18 +478,26 @@ function makeCamCell(cam, idx) {
   cell.dataset.idx = idx;
 
   const cacheBreak = state.refreshCache[cam.id] || Date.now();
+  state.refreshCache[cam.id] = cacheBreak;
 
   const name = cam.location && !cam.location.startsWith('CAM-')
     ? cam.location
     : `CAM-${cam.id}`;
 
-  cell.innerHTML = `
-    <img class="cam-img" src="${cam.imgUrl}?_t=${cacheBreak}"
-         loading="lazy"
-         alt="${name}"
-         draggable="false">
-    <div class="cam-status"></div>
-  `;
+  const image = document.createElement('img');
+  image.className = 'cam-img';
+  image.src = utils.imageUrl(cam.imgUrl, cacheBreak, location.href);
+  image.loading = 'lazy'; image.alt = name; image.draggable = false;
+  const status = document.createElement('div'); status.className = 'cam-status';
+  const caption = document.createElement('div'); caption.className = 'cam-caption';
+  caption.textContent = name;
+  cell.append(image, status, caption);
+  cell.tabIndex = 0;
+  cell.setAttribute('role', 'button');
+  cell.setAttribute('aria-label', `Open ${name}`);
+  cell.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(cam); }
+  });
 
   cell.addEventListener('mouseenter', () => highlightMarker(cam.id));
   cell.addEventListener('mouseleave', () => unhighlightMarker(cam.id));
@@ -392,7 +520,19 @@ function makeCamCell(cam, idx) {
 }
 
 // ── Modal ──────────────────────────────────────
-function openModal(cam) {
+function openModal(cam, historyMode = 'auto') {
+  const alreadyOpen = !!state.modalCam;
+  if (!alreadyOpen) state.modalReturnFocus = document.activeElement;
+  if (historyMode === 'auto') {
+    const url = utils.cameraUrl(location.href, cam.id);
+    if (alreadyOpen) history.replaceState(history.state, '', url);
+    else {
+      history.pushState({ mtsCamera: true }, '', url);
+      state.modalHistoryPushed = true;
+    }
+  }
+  document.getElementById('share-panel').hidden = true;
+  document.getElementById('share-status').textContent = '';
   state.modalCam = cam;
   state.modalIdx = state.filtered.indexOf(cam);
 
@@ -412,11 +552,12 @@ function openModal(cam) {
   coords.textContent = cam.lat ? `${cam.lat.toFixed(5)}, ${cam.lng.toFixed(5)}` : '';
 
   showModalSpinner();
-  img.src = `${cam.imgUrl}?_t=${Date.now()}`;
-  img.onload  = () => { hideModalSpinner(); ts.textContent = new Date().toLocaleTimeString(); };
+  img.onload  = () => { hideModalSpinner(); ts.textContent = 'Loaded ' + new Date().toLocaleTimeString(); };
   img.onerror = () => { hideModalSpinner(); ts.textContent = 'FEED UNAVAILABLE'; };
+  img.src = utils.imageUrl(cam.imgUrl, Date.now(), location.href);
 
   overlay.style.display = 'flex';
+  if (!alreadyOpen) document.getElementById('btn-modal-close').focus();
   document.addEventListener('keydown', onModalKey);
 
   // Brief swipe hint on touch devices
@@ -432,11 +573,17 @@ function openModal(cam) {
   }
 }
 
-window.closeModal = function() {
+window.closeModal = function(updateHistory = true) {
   if (_fsActive) exitFsMode();
   document.getElementById('modal-overlay').style.display = 'none';
   document.removeEventListener('keydown', onModalKey);
   state.modalCam = null;
+  document.getElementById('share-panel').hidden = true;
+  if (state.modalReturnFocus?.isConnected) state.modalReturnFocus.focus();
+  if (updateHistory) {
+    if (state.modalHistoryPushed) { state.modalHistoryPushed = false; history.back(); }
+    else { const url = new URL(location.href); url.searchParams.delete('camera'); history.replaceState(history.state, '', url); }
+  }
 };
 
 window.refreshModal = function() {
@@ -444,26 +591,37 @@ window.refreshModal = function() {
   const img = document.getElementById('modal-img');
   const ts  = document.getElementById('modal-timestamp');
   showModalSpinner();
-  img.src = `${state.modalCam.imgUrl}?_t=${Date.now()}`;
-  img.onload  = () => { hideModalSpinner(); ts.textContent = new Date().toLocaleTimeString(); };
+  img.onload  = () => { hideModalSpinner(); ts.textContent = 'Loaded ' + new Date().toLocaleTimeString(); };
   img.onerror = () => { hideModalSpinner(); ts.textContent = 'FEED UNAVAILABLE'; };
+  img.src = utils.imageUrl(state.modalCam.imgUrl, Date.now(), location.href);
 };
 
 window.gotoOnMap = function() {
   const cam = state.modalCam;
-  if (!cam || !cam.lat) return;
+  if (!cam || !state.map) return;
   closeModal();
-  state.map.setView([cam.lat, cam.lng], 14);
+  setMobileView('map');
+  state.useDefault = false;
+  moveMap(() => state.map.setView([cam.lat, cam.lng], 14, { animate: false }));
+  applyFilters();
 };
 
 function navModal(dir) {
-  if (!state.filtered.length) return;
-  let idx = (state.modalIdx + dir + state.filtered.length) % state.filtered.length;
-  openModal(state.filtered[idx]);
+  const cameras = state.filtered.length ? state.filtered : state.cameras;
+  if (!cameras.length) return;
+  const current = cameras.indexOf(state.modalCam);
+  openModal(cameras[(current + dir + cameras.length) % cameras.length]);
 }
 
 function onModalKey(e) {
+  if (e.key === 'Tab') {
+    const controls = [...document.querySelectorAll('#modal button, #modal input, #modal a[href]')].filter(el => !el.disabled && !el.closest('[hidden]'));
+    const first = controls[0], last = controls[controls.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+  }
   if (e.key === 'Escape')      closeModal();
+  if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement) return;
   if (e.key === 'ArrowRight')  navModal(1);
   if (e.key === 'ArrowLeft')   navModal(-1);
   if (e.key === 'r')           refreshModal();
@@ -482,25 +640,36 @@ function startRefreshCycle() {
   if (state.refreshTimer) clearInterval(state.refreshTimer);
   const rate = state.refreshRate;
   if (!rate) return;
-  state.refreshTimer = setInterval(refreshAllVisible, rate);
+  state.refreshTimer = setInterval(() => refreshAllVisible(false), rate);
 }
 
-function refreshAllVisible() {
+function refreshAllVisible(force = true) {
   const now = Date.now();
   document.querySelectorAll('.cam-cell').forEach(cell => {
     const id  = cell.dataset.id;
     const img = cell.querySelector('.cam-img');
     if (!img) return;
-    state.refreshCache[id] = now;
     const cam = state.cameras.find(c => String(c.id) === String(id));
     if (cam) {
-      img.src = `${cam.imgUrl}?_t=${now}`;
+      const minAge = Math.max(cam.refreshSeconds || 0, currentState?.minRefreshSeconds || 0) * 1000;
+      if (!force && now - (state.refreshCache[id] || 0) < minAge) return;
+      state.refreshCache[id] = now;
+      img.src = utils.imageUrl(cam.imgUrl, now, location.href);
     }
   });
 }
 
 // ── Controls ───────────────────────────────────
 function bindControls() {
+  document.getElementById('camera-search').addEventListener('input', () => {
+    state.useDefault = true;
+    applyFilters();
+  });
+  document.getElementById('btn-list-toggle').addEventListener('click', () => {
+    state.listView = !state.listView; updateListView();
+  });
+  document.getElementById('btn-share-camera').addEventListener('click', shareCamera);
+  document.getElementById('btn-copy-link').addEventListener('click', copyCameraLink);
 
 
   // Mobile view toggle: MAP ↔ FEEDS
@@ -522,7 +691,13 @@ function bindControls() {
       const lat  = parseFloat(btn.dataset.lat);
       const lng  = parseFloat(btn.dataset.lng);
       const zoom = parseInt(btn.dataset.zoom);
-      state.map.setView([lat, lng], zoom);
+      state.useDefault = false;
+      if (state.map) {
+        moveMap(() => state.map.setView([lat, lng], zoom, { animate: false }));
+      } else {
+        state.cameras.sort((a,b) => haversine(lat, lng, a.lat, a.lng) - haversine(lat, lng, b.lat, b.lng));
+      }
+      applyFilters();
       if (window.innerWidth <= 600) setMobileView('feeds');
     });
   });
@@ -552,7 +727,9 @@ function bindControls() {
 
   // Refresh rate
   document.getElementById('refresh-rate').addEventListener('change', e => {
-    state.refreshRate = parseInt(e.target.value);
+    const selected = Number(e.target.value);
+    state.refreshRate = selected === 0 ? 0 : Math.max(selected || 60000, (currentState?.minRefreshSeconds || 0) * 1000);
+    e.target.value = String(state.refreshRate);
     startRefreshCycle();
   });
   document.getElementById('btn-refresh-now').addEventListener('click', refreshAllVisible);
@@ -570,9 +747,10 @@ function bindControls() {
 
   // Keyboard global shortcuts
   document.addEventListener('keydown', e => {
-    if (document.getElementById('modal-overlay').style.display !== 'none') return;
+    if (document.getElementById('modal-overlay').style.display !== 'none' || e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.target.isContentEditable) return;
     if (e.key === 'Escape') { resetFilters(); }
     if (e.key === 'r')      { refreshAllVisible(); }
+    if (e.key.toLowerCase() === 'f') { e.preventDefault(); setMobileView('feeds'); document.getElementById('camera-search').focus(); }
   });
 }
 
@@ -596,20 +774,23 @@ function applyAutoLayout() {
 
 function resetFilters() {
   state.useDefault       = true;
-  state.programmaticMove = true;
-  state.gridSize         = 5;
-  state.map.setView([HOME.lat, HOME.lng], HOME.zoom, { animate: true });
+  document.getElementById('camera-search').value = '';
+  state.gridSize = utils.defaultGridSize(window.innerWidth);
+  moveMap(() => state.map.setView([HOME.lat, HOME.lng], HOME.zoom, { animate: false }));
   applyFilters();
 }
 
 // ── Loading / Stats ────────────────────────────
 function setStatus(msg, pct) {
-  document.getElementById('loading-status').textContent = msg;
-  document.getElementById('loading-bar').style.width = `${pct}%`;
+  const label = document.getElementById('loading-status');
+  const bar = document.getElementById('loading-bar');
+  if (label) label.textContent = msg;
+  if (bar) bar.style.width = `${pct}%`;
 }
 
 function hideLoading() {
   const ls = document.getElementById('loading-screen');
+  if (!ls) return;
   ls.style.opacity = '0';
   ls.style.transition = 'opacity .3s';
   setTimeout(() => ls.remove(), 300);
@@ -655,7 +836,7 @@ function startPresence() {
 // ── Dark mode ──────────────────────────────────
 function initDarkMode() {
   // Restore saved preference before first paint
-  if (localStorage.getItem('mts-dark') === '1') applyDark(true);
+  try { if (localStorage.getItem('mts-dark') === '1') applyDark(true); } catch (_) {}
 
   document.getElementById('btn-dark-toggle')
     .addEventListener('click', () => applyDark(!document.body.classList.contains('dark')));
@@ -663,7 +844,7 @@ function initDarkMode() {
 
 function applyDark(on) {
   document.body.classList.toggle('dark', on);
-  localStorage.setItem('mts-dark', on ? '1' : '0');
+  try { localStorage.setItem('mts-dark', on ? '1' : '0'); } catch (_) {}
   // Leaflet needs a tile refresh after the CSS filter changes
   if (state.map) state.map.invalidateSize();
 }
@@ -684,7 +865,7 @@ function setMobileView(view) {
     sidebar.classList.remove('mobile-hidden');
     gridPanel.classList.remove('mobile-visible');
     if (btn) { btn.textContent = '⊞ FEEDS'; btn.classList.remove('active'); }
-    if (state.map) setTimeout(() => state.map.invalidateSize(), 50);
+    if (state.map) setTimeout(() => moveMap(() => state.map.invalidateSize({ pan: false })), 50);
   }
 }
 
@@ -770,47 +951,65 @@ function unlockOrientation() {
   } catch (_) {}
 }
 
-// ── Demo fallback (if CORS blocks) ────────────
+// Camera failure remains visible in the list; never fabricate camera feeds.
 function loadDemoFallback(errMsg) {
-  const grid  = document.getElementById('camera-grid');
-  const noRes = document.getElementById('no-results');
-  noRes.style.display = 'none';
-
-  const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
-
-  const note = document.createElement('div');
-  note.style.cssText = `
-    grid-column: 1 / -1;
-    padding: 40px;
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 11px;
-    line-height: 2;
-    letter-spacing: .08em;
-  `;
-
-  if (isLocal) {
-    note.innerHTML = `
-      <div style="color:var(--accent);font-size:14px;margin-bottom:12px">// PROXY SERVER REQUIRED</div>
-      <div>Run the CLI tool to start the local proxy:</div>
-      <div style="margin-top:12px;color:var(--accent2)">node cli/mts-cli.js serve --port 8080</div>
-      <div style="margin-top:8px">Then open: <span style="color:var(--accent)">http://localhost:8080</span></div>
-    `;
-  } else {
-    note.innerHTML = `
-      <div style="color:var(--accent);font-size:14px;margin-bottom:12px">// FAILED TO CONNECT TO UDOT API</div>
-      <div>Could not load camera data. The service may be temporarily unavailable.</div>
-      <div style="margin-top:12px">
-        <button onclick="location.reload()" style="
-          background:transparent;border:1px solid var(--border);color:var(--text-dim);
-          font-family:var(--font-mono);font-size:10px;padding:6px 16px;
-          border-radius:2px;cursor:pointer;letter-spacing:.08em;">
-          ↺ RETRY
-        </button>
-      </div>
-      ${errMsg ? `<div style="margin-top:12px;color:var(--text-meta);font-size:9px">${errMsg}</div>` : ''}
-    `;
+  const grid = document.getElementById('camera-grid');
+  grid.replaceChildren();
+  document.getElementById('no-results').style.display = 'none';
+  const note = document.createElement('div'); note.className = 'camera-error';
+  const title = document.createElement('h2'); title.textContent = 'Camera data unavailable';
+  const message = document.createElement('p'); message.textContent = errMsg || 'Please try again later.';
+  const retry = document.createElement('button'); retry.className = 'btn-ghost'; retry.textContent = 'RETRY';
+  retry.addEventListener('click', async () => { retry.disabled = true; await loadCameras(); retry.disabled = false; });
+  note.append(title, message, retry);
+  if (currentState?.sourceUrl) {
+    const link = document.createElement('a'); link.href = currentState.officialViewerUrl || currentState.sourceUrl;
+    link.target = '_blank'; link.rel = 'noopener noreferrer'; link.textContent = 'Open official camera source'; note.append(link);
   }
-
   grid.appendChild(note);
+  setMobileView('feeds');
+}
+
+function updateListView() {
+  document.getElementById('camera-grid').classList.toggle('camera-list', state.listView);
+  const button = document.getElementById('btn-list-toggle');
+  button.textContent = state.listView ? 'GRID' : 'LIST';
+  button.setAttribute('aria-pressed', String(state.listView));
+  button.title = state.listView ? 'Show camera grid' : 'Show camera list';
+}
+
+function openSharedCamera() {
+  const id = new URL(location.href).searchParams.get('camera');
+  if (!id) { if (state.modalCam) closeModal(false); state.modalHistoryPushed = false; return; }
+  if (!state.cameras.length) return;
+  const cam = state.cameras.find(c => String(c.id) === id);
+  if (!cam) { notify('This camera is no longer in the current source. Choose another camera below.'); return; }
+  openModal(cam, 'none');
+}
+
+async function shareCamera() {
+  if (!state.modalCam) return;
+  const cam = state.modalCam;
+  const url = utils.cameraUrl(location.href, cam.id);
+  if (navigator.share) {
+    try { await navigator.share({ title: `${currentState?.name || ''} traffic camera: ${cam.location}`, url }); return; }
+    catch (error) { if (error.name === 'AbortError') return; }
+  }
+  document.getElementById('share-panel').hidden = false;
+  document.getElementById('share-url').value = url;
+  await copyCameraLink();
+}
+
+async function copyCameraLink() {
+  const input = document.getElementById('share-url');
+  const status = document.getElementById('share-status');
+  if (!input.value && state.modalCam) input.value = utils.cameraUrl(location.href, state.modalCam.id);
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error('Clipboard not available');
+    await navigator.clipboard.writeText(input.value);
+    status.textContent = 'Link copied';
+  } catch (_) {
+    input.focus(); input.select();
+    status.textContent = 'Select and copy this link';
+  }
 }

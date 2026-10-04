@@ -209,7 +209,7 @@ html, body {
 
 /* Leaflet — CartoDB Positron (white map, no invert needed) */
 .leaflet-container { background: #f0f0f0 !important; }
-.leaflet-control-attribution { display: none !important; }
+.leaflet-control-attribution { font-size: 9px; max-width: calc(100vw - 30px); }
 .leaflet-control-zoom a {
   background: #fff !important;
   color: #000 !important;
@@ -873,3 +873,72 @@ input[type="range"] {
 
 /* selected camera highlight */
 .cam-cell.selected { border-color: var(--accent3); box-shadow: 0 0 8px rgba(255,107,53,.3); }
+
+/* Dependable map/list and mobile camera controls. */
+[hidden] { display: none !important; }
+.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+:focus-visible { outline: 2px solid var(--accent3); outline-offset: 3px; }
+#map-status { position: absolute; top: 12px; left: 54px; right: 8px; z-index: 650; padding: 8px; background: var(--bg); border: 1px solid var(--border); font-size: 11px; line-height: 1.5; box-shadow: 0 2px 8px #0002; }
+.state-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.state-controls select { min-width: 0; flex: 1; max-width: 100%; }
+#source-link { display: block; width: 100%; color: var(--text-dim); font-size: 10px; line-height: 1.5; }
+.camera-toolbar { display: flex; gap: 8px; padding: 10px 12px; background: var(--bg); border-bottom: 1px solid var(--border); }
+#camera-search { flex: 1; min-width: 0; font: inherit; padding: 8px; color: var(--text); background: var(--bg); border: 1px solid var(--border); border-radius: 4px; }
+#app-notice { padding: 10px 12px; font-size: 12px; line-height: 1.5; color: var(--text); background: var(--bg3); }
+.cam-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 6px 8px; background: #000b; color: #fff; font-size: 10px; line-height: 1.4; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none; }
+#camera-grid.camera-list { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; grid-auto-rows: max-content; align-items: start; }
+#camera-grid.camera-list .cam-cell { width: 100%; min-width: 0; aspect-ratio: 16 / 10; }
+#camera-grid.camera-list .cam-caption { white-space: normal; padding: 8px; font-size: 12px; }
+.camera-error { grid-column: 1/-1; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px; line-height: 1.5; }
+.camera-error h2 { font-size: 16px; }
+.camera-error a { color: var(--text); }
+#share-panel { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; padding: 12px; border-top: 1px solid var(--border); }
+#share-url { min-width: 0; flex: 1; padding: 10px; font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--border); }
+#share-status { font-size: 11px; }
+#modal-footer { flex-wrap: wrap; }
+#modal-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+#modal { overflow-y: auto; }
+body.dark .leaflet-control-attribution { background: #fffe; color: #222; }
+@media (max-width: 900px) { .logo-sub { display: none; } #header { gap: 10px; } }
+@media (max-width: 600px) {
+  :root { --header-h: calc(60px + env(safe-area-inset-top, 0px)); }
+  #header { padding: 8px 10px; gap: 6px; justify-content: space-between; padding-top: max(8px, env(safe-area-inset-top)); }
+  .header-left { flex: 1; min-width: 0; gap: 3px; }
+  .logo-text { font-size: 10px; letter-spacing: 0; line-height: 1.3; max-width: 135px; }
+  .logo-bracket { font-size: 12px; }
+  .header-right { gap: 5px; }
+  .clock, .tz { display: none; }
+  button, .btn-ghost, .btn-region, #btn-dark-toggle, .btn-close, .btn-fullscreen-footer { min-height: 44px; min-width: 44px; touch-action: manipulation; }
+  #btn-map-toggle { font-size: 11px; padding: 8px; }
+  #main { bottom: env(safe-area-inset-bottom); }
+  #map-container { height: 46dvh; min-height: 200px; }
+  #sidebar > .state-controls { flex: 0 0 auto; overflow: visible; padding: 8px 12px; }
+  .region-grid { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .btn-region { font-size: 10px; }
+  .filter-select { min-height: 44px; font-size: 14px; }
+  .camera-toolbar { padding: 8px; }
+  #camera-search { font-size: 16px; }
+  .grid-size-controls, .refresh-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
+  #grid-panel .panel-header { padding: 8px; }
+  #camera-grid { padding: 8px; gap: 8px; }
+  #camera-grid.camera-list { grid-template-columns: 1fr !important; }
+  .cam-caption { font-size: 11px; }
+  #modal-overlay { padding: 0; }
+  #modal { max-height: 100dvh !important; padding-bottom: env(safe-area-inset-bottom); }
+  #modal-header { padding: 8px; gap: 6px; flex-wrap: wrap; }
+  #modal-title { flex: 1 1 150px; font-size: 12px; }
+  .modal-controls { margin-left: auto; }
+  #modal-img { max-height: 55dvh; }
+  #modal-footer { gap: 8px; padding: 10px; }
+  #modal-coords { flex-basis: 100%; font-size: 11px; }
+  #share-panel { align-items: stretch; }
+  #share-panel label { width: 100%; }
+  #share-url { font-size: 16px; }
+  .btn-fullscreen-footer { margin-left: 0; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+#grid-panel { min-width: 0; }
+#camera-grid { overflow-y: auto; min-height: 0; }
+.camera-toolbar, #app-notice { flex: 0 0 auto; }
+#source-credit, #coverage-note { color: var(--text-dim); font-size: 10px; line-height: 1.5; }
+.cam-marker { display: flex; align-items: center; justify-content: center; }
